@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.container{
+  width: 90%;
+  margin: auto;
+}
+
+header .top-strip{
+  border-bottom: 1px solid rgb(205, 205, 205);
+  border-top: 1px solid rgb(205, 205, 205);
+}
