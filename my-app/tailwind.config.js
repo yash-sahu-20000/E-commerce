@@ -1,4 +1,5 @@
 export default {
+    darkMode: "class",
   content: [
     "./index.html",
     "./src/**/*.{js,jsx,ts,tsx}",
@@ -7,9 +8,7 @@ export default {
     extend: {
      colors: {
       primary: {
-        DEFAULT: '#eeccff',
-        dark: '#a66bff',
-        light: '#e2ccff',
+        DEFAULT: '#F7F2E1',
     },
   },
 

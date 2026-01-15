@@ -1,16 +1,107 @@
-import React from 'react';
+import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 
 export default function Header() {
+  const [darkMode, setDarkMode] = useState(false)
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme")
+    if (storedTheme === "dark") {
+      setDarkMode(true)
+        document.documentElement.classList.add("dark")
+    }
+  }, [])
+
+  const toggleDarkMode = () => {
+    const isDark = !darkMode
+    setDarkMode(isDark)
+    document.documentElement.classList.toggle("dark", isDark)
+    localStorage.setItem("theme", isDark ? "dark" : "light")
+  }
+
   return (
-    <div className="bg-primary">
-      <header className="container mx-auto px-4">
-        <div className="top-strip flex text-sm font-bold justify-between text-gray-800 py-2">
-          <div className="w-1/2">
+    <div className="bg-primary dark:bg-gray-900 transition-colors">
+      <header className=" max-w-7xl mx-auto px-4">
+        <div className="top-strip flex flex-col gap-2 py-2 text-sm font-semibold
+                        md:flex-row md:items-center md:justify-between
+                        text-gray-800 dark:text-gray-200">
+
+          <div className="text-center md:text-left md:w-1/2">
             Super Deal! Free Shipping on Orders Over $50
           </div>
+
+          <div className="flex items-center justify-center md:justify-end gap-4">
+            <ul className="flex gap-3">
+              <li>
+                <Link className="hover:underline" to="/login">Login</Link>
+              </li>
+              <li>
+                <Link className="hover:underline" to="/register">Register</Link>
+              </li>
+              <li className="hidden sm:block">
+                <Link className="hover:underline" to="/help">Help</Link>
+              </li>
+              <li className="hidden sm:block">
+                <Link className="hover:underline" to="/contact">Contact Us</Link>
+              </li>
+            </ul>
+
+            <button
+              onClick={toggleDarkMode}
+              aria-label="Toggle dark mode"
+              className="ml-2 rounded border px-2 py-1 text-xs
+                         border-gray-400 dark:border-gray-600
+                         hover:bg-black/10 dark:hover:bg-white/10 transition"
+            >
+              {darkMode ? "Light ☀️" : "Dark 🌙"}
+            </button>
+          </div>
+
         </div>
+
+        <div>
+          <div className="col1 flex justify-center sm:justify-start  dark:text-white">
+
+            <Link to="/" aria-label="Go to Home Page">
+              <svg width="360" height="90" viewBox="0 0 360 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="goldGradient" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#D4AF37"/>
+                    <stop offset="50%" stop-color="#FFD700"/>
+                    <stop offset="100%" stop-color="#B8962E"/>
+                  </linearGradient>
+                </defs>
+
+                <g transform="translate(12,18)">
+                  <rect x="0" y="8" width="42" height="22" rx="6" fill="url(#goldGradient)"/>
+                  <path d="M6 8 L2 0" stroke="url(#goldGradient)" stroke-width="3" stroke-linecap="round"/>
+                  <circle cx="14" cy="36" r="4" fill="currentColor"/>
+                  <circle cx="34" cy="36" r="4" fill="currentColor"/>
+                </g>
+
+                <text x="80" y="55"
+                font-family="Playfair Display, Georgia, serif"
+                font-size="40"
+                font-weight="600"
+                letter-spacing="1.2"
+                fill="currentColor">
+                  Urban
+                  <tspan fill="url(#goldGradient)">Cart</tspan>
+                </text>
+
+              </svg>
+            </Link>
+          </div>
+          <div className="col2">
+            
+          </div>
+          <div className="col3">
+
+          </div>
+        </div>
+
+
       </header>
     </div>
-  );
+  )
 }
-
