@@ -35,25 +35,41 @@ export default function Header() {
           <div className="flex items-center justify-between md:justify-end gap-4">
             <ul className="flex gap-3">
               <li>
-                <Link className="hover:underline" to="/login">Login</Link>
-              </li>
+                <Link
+                    to="/login"
+                    className="px-4 py-1.5 rounded-full text-sm font-medium
+                              hover:shadow-md dark:hover:shadow-white dark:hover:shadow-sm
+                              transition-all duration-300 hover:scale-105 border-r-2 border-gray-400 dark:border-gray-600">
+
+                    Login
+                  </Link>             
+           </li>
               <li>
-                <Link className="hover:underline" to="/register">Register</Link>
+                <Link className="px-4 py-1.5 rounded-full text-sm font-medium
+                              hover:shadow-md dark:hover:shadow-white dark:hover:shadow-sm
+                              transition-all duration-300 hover:scale-105 border-r-2 border-gray-400 dark:border-gray-600" to="/register">Register</Link>
               </li>
               <li className="hidden md:block">
-                <Link className="hover:underline" to="/help">Help</Link>
+                <Link className="px-4 py-1.5 rounded-full text-sm font-medium
+                              hover:shadow-md dark:hover:shadow-white dark:hover:shadow-sm
+                              transition-all duration-300 hover:scale-105 border-r-2 border-gray-400 dark:border-gray-600" to="/help">Help</Link>
               </li>
               <li className="hidden md:block">
-                <Link className="hover:underline" to="/contact">Contact Us</Link>
+                <Link className="px-4 py-1.5 rounded-full text-sm font-medium
+                              hover:shadow-md dark:hover:shadow-white dark:hover:shadow-sm
+                              transition-all duration-300 hover:scale-105 border-r-2 border-gray-400 dark:border-gray-600" to="/contact">Contact Us</Link>
               </li>
             </ul>
 
             <button
               onClick={toggleDarkMode}
               aria-label="Toggle dark mode"
-              className="ml-2 rounded border px-2 py-1 text-xs
-                         border-gray-400 dark:border-gray-600
-                         hover:bg-black/10 dark:hover:bg-white/10 transition"
+                className="px-4 py-1.5 rounded-full text-sm font-medium
+                                hover:shadow-md dark:hover:shadow-white dark:hover:shadow-sm
+                                transition-all duration-300 hover:scale-105 border-r-2
+                              ml-2  border 
+                          border-gray-400 dark:border-gray-600
+                          hover:bg-black/10 dark:hover:bg-white/10"
             >
               {darkMode ? "Light ☀️" : "Dark 🌙"}
             </button>
@@ -98,12 +114,12 @@ export default function Header() {
           <div className="col2 w-[80%] md:w-[40%]">
             <Search />
           </div>
-          <div className="col3 w-[30%] justify-end gap-4 items-center dark:text-white hidden md:flex">
-            <div className="flex items-center gap-1">
-              <FaHeart className=" text-lg "/>Wishlist
+          <div className="col3 w-[30%] justify-end gap-4 items-center dark:text-white hidden md:flex hover:cursor-pointer ">
+            <div className="flex items-center gap-1  hover:scale-110 hover:underline transition-all duration-300">
+              <FaHeart/>Wishlist
             </div>
-            <div className="flex items-center gap-1">
-              <FaShoppingCart  dark:text-white/> Cart
+            <div className="flex items-center gap-1 hover:scale-110 hover:underline transition-all duration-300">
+              <FaShoppingCart/> Cart
             </div>
           </div>
         </div>
