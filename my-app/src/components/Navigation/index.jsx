@@ -21,8 +21,6 @@ const MOBILE_ICONS = [
   { icon: <GiClothes />, label: "Fashion" },
   { icon: <GiRunningShoe />, label: "Footwear" },
   { icon: <FaShoppingBag />, label: "Bag" },
-  { icon: <GiLipstick />, label: "Beauty" },
-  { icon: <GiJewelCrown />, label: "Jewellery" },
 ];
 
 function Navigation() {
@@ -34,7 +32,9 @@ function Navigation() {
     }
 
   return (
-    <nav className="flex items-center justify-between gap-6 py-3">
+    <>
+  
+    <nav className="flex items-center gap-6 py-3 justify-between">
       
       <Button
         color="inherit"
@@ -45,18 +45,18 @@ function Navigation() {
       >
         <span color="inherit" className=" text-gray-700 dark:text-gray-300 hidden md:inline">Shop by Categories</span>
       </Button>
-        <ul className="hidden md:flex gap-6 text-gray-700 dark:text-gray-300 font-medium">
+        <ul className="hidden md:flex gap-6 text-gray-700 dark:text-gray-300 font-medium ">
             {NAV_ITEMS.map((item) => (
                 <li key={item} className="relative group">
-                <button className="px-4 py-2 font-medium transition-colors">
+                <button className="px-4 py-2 font-medium transition-colors hover:underline">
                     {item}
                 </button>
                 <div
                     className="absolute top-full left-0 min-w-[160px] mt-1
                     bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-200
-                    rounded-lg shadow-lg opacity-0 invisible
+                    shadow-lg opacity-0 invisible
                     group-hover:opacity-100 group-hover:visible
-                    transition-all duration-200"
+                    transition-all duration-200 z-10"
                 >
                     <ul className="flex flex-col">
                     <li className="cursor-pointer px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700
@@ -71,7 +71,7 @@ function Navigation() {
                 </div>
                 </li>
             ))}
-            </ul>
+        </ul>
 
 
       <ul className="flex md:hidden gap-1">
@@ -81,10 +81,10 @@ function Navigation() {
               {icon}
             </Button>
                 {openMobileItem === label && (
-                    <div className=" absolute top-full left-0 min-w-[100] rounded-lg shadow-lg py-1 px-2 bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-200">
+                    <div className=" absolute top-full left-0 min-w-[100] z-10 rounded-lg shadow-lg py-1 px-2 bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-200">
                         <ul className="space-y-2">
                             <li
-                            className="cursor-pointer rounded-md px-2 py-1
+                            className="cursor-pointer px-2 py-1
                                 hover:bg-gray-100 hover:text-gray-900
                                 dark:hover:bg-gray-700 dark:hover:text-white
                                 transition-colors">
@@ -92,7 +92,7 @@ function Navigation() {
                             </li>
 
                             <li
-                            className="cursor-pointer rounded-md px-2 py-1
+                            className="cursor-pointer px-2 py-1
                                 hover:bg-gray-100 hover:text-gray-900
                                 dark:hover:bg-gray-700 dark:hover:text-white
                                 transition-colors"
@@ -105,13 +105,15 @@ function Navigation() {
           </li>
         ))}
       </ul>
+
+ 
+    </nav>
       <CategoryPanel
         open={openCategoryPanel}
         onClose={() => setOpenCategoryPanel(false)}
       />
 
- 
-    </nav>
+      </>
   );
 }
 

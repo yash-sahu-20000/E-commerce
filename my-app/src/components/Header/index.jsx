@@ -23,8 +23,8 @@ export default function Header() {
   }
 
   return (
-    <div className=" bg-primary dark:bg-gray-900 transition-colors">
-      <header className=" max-w-7xl mx-auto px-4">
+    <div className="bg-primary dark:bg-gray-900 transition-colors">
+      <header className=" max-w-[95%] mx-auto px-4">
         <div className="top-strip flex flex-col gap-2 py-2 text-sm font-semibold
                         md:flex-row md:items-center md:justify-between
                         text-gray-800 dark:text-gray-200">
@@ -69,7 +69,7 @@ export default function Header() {
                                 hover:shadow-md dark:hover:shadow-white dark:hover:shadow-sm
                                 transition-all duration-300 hover:scale-105 border-r-2
                               ml-2  border 
-                          border-gray-400 dark:border-gray-600
+                          border-gray-400 dark:border-gray-700
                           hover:bg-black/10 dark:hover:bg-white/10"
             >
               {darkMode ? "Light ☀️" : "Dark 🌙"}
@@ -78,7 +78,7 @@ export default function Header() {
 
         </div>
 
-        <div className="flex items-center justify-between md:flex-row flex-col py-4 border-t border-b">
+        <div className="flex items-center justify-between md:flex-row flex-col py-4 border-t border-b dark:border-gray-700">
 
           <div className="col1 flex justify-center md:justify-start  dark:text-white ">
             <Link to="/" aria-label="Go to Home Page">
@@ -125,7 +125,7 @@ export default function Header() {
           </div>
         </div>
 
-        <div className="border-b">
+        <div className="border-b dark:border-gray-700">
           <Navigation />
         </div>
 
