@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import Search from "../Search"
 import { FaHeart, FaShoppingCart } from "react-icons/fa"
+import Navigation from "../Navigation"
 
 export default function Header() {
   const [darkMode, setDarkMode] = useState(false)
@@ -57,7 +58,7 @@ export default function Header() {
               <li className="hidden md:block">
                 <Link className="px-4 py-1.5 rounded-full text-sm font-medium
                               hover:shadow-md dark:hover:shadow-white dark:hover:shadow-sm
-                              transition-all duration-300 hover:scale-105 border-r-2 border-gray-400 dark:border-gray-600" to="/contact">Contact Us</Link>
+                              transition-all duration-300 hover:scale-105 border-r-2 border-gray-400 dark:border-gray-600" to="/contact">Contact</Link>
               </li>
             </ul>
 
@@ -77,7 +78,7 @@ export default function Header() {
 
         </div>
 
-        <div className="flex items-center justify-between md:flex-row flex-col py-4 border-t">
+        <div className="flex items-center justify-between md:flex-row flex-col py-4 border-t border-b">
 
           <div className="col1 flex justify-center md:justify-start  dark:text-white ">
             <Link to="/" aria-label="Go to Home Page">
@@ -124,6 +125,9 @@ export default function Header() {
           </div>
         </div>
 
+        <div className="border-b">
+          <Navigation />
+        </div>
 
       </header>
     </div>
