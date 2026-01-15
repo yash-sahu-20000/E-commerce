@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import Search from "../Search"
+import { FaHeart, FaShoppingCart } from "react-icons/fa"
 
 export default function Header() {
   const [darkMode, setDarkMode] = useState(false)
@@ -20,17 +22,17 @@ export default function Header() {
   }
 
   return (
-    <div className="bg-primary dark:bg-gray-900 transition-colors">
+    <div className=" bg-primary dark:bg-gray-900 transition-colors">
       <header className=" max-w-7xl mx-auto px-4">
         <div className="top-strip flex flex-col gap-2 py-2 text-sm font-semibold
                         md:flex-row md:items-center md:justify-between
                         text-gray-800 dark:text-gray-200">
 
-          <div className="text-center md:text-left md:w-1/2">
+          <div className="text-center md:text-left md:w-1/2 md:block hidden">
             Super Deal! Free Shipping on Orders Over $50
           </div>
 
-          <div className="flex items-center justify-center md:justify-end gap-4">
+          <div className="flex items-center justify-between md:justify-end gap-4">
             <ul className="flex gap-3">
               <li>
                 <Link className="hover:underline" to="/login">Login</Link>
@@ -38,10 +40,10 @@ export default function Header() {
               <li>
                 <Link className="hover:underline" to="/register">Register</Link>
               </li>
-              <li className="hidden sm:block">
+              <li className="hidden md:block">
                 <Link className="hover:underline" to="/help">Help</Link>
               </li>
-              <li className="hidden sm:block">
+              <li className="hidden md:block">
                 <Link className="hover:underline" to="/contact">Contact Us</Link>
               </li>
             </ul>
@@ -59,9 +61,9 @@ export default function Header() {
 
         </div>
 
-        <div>
-          <div className="col1 flex justify-center sm:justify-start  dark:text-white">
+        <div className="flex items-center justify-between md:flex-row flex-col py-4 border-t">
 
+          <div className="col1 flex justify-center md:justify-start  dark:text-white ">
             <Link to="/" aria-label="Go to Home Page">
               <svg width="360" height="90" viewBox="0 0 360 90" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
@@ -92,11 +94,17 @@ export default function Header() {
               </svg>
             </Link>
           </div>
-          <div className="col2">
-            
-          </div>
-          <div className="col3">
 
+          <div className="col2 w-[80%] md:w-[40%]">
+            <Search />
+          </div>
+          <div className="col3 w-[30%] justify-end gap-4 items-center dark:text-white hidden md:flex">
+            <div className="flex items-center gap-1">
+              <FaHeart className=" text-lg "/>Wishlist
+            </div>
+            <div className="flex items-center gap-1">
+              <FaShoppingCart  dark:text-white/> Cart
+            </div>
           </div>
         </div>
 
