@@ -23,7 +23,7 @@ export default function Header() {
   }
 
   return (
-    <div className="bg-primary dark:bg-gray-900 transition-colors">
+    <div className="bg-primary dark:bg-gray-900 transition-colors sticky top-0 z-50">
       <header className=" max-w-[95%] mx-auto px-4">
         <div className="top-strip flex flex-col gap-2 py-2 text-sm font-semibold
                         md:flex-row md:items-center md:justify-between

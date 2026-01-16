@@ -28,10 +28,6 @@ function Home() {
             <div>
               <HeroBanner />
             </div>
-            <div>
-              <Footer />
-            </div>
-            
           </div>
         </div>
   )
