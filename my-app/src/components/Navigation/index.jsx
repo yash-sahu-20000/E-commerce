@@ -34,7 +34,7 @@ function Navigation() {
   return (
     <>
   
-    <nav className="flex items-center gap-6 py-3 justify-between">
+    <nav className="flex items-center gap-6 py-3 justify-between bg-white dark:bg-gray-900 z-20 px-4 shadow-md">
       
       <Button
         color="inherit"

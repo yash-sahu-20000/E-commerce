@@ -3,6 +3,8 @@ import "../../index.css"
 import HomeSlider from '../../components/HomeSlider'
 import CategorySlider from '../../components/CategorySlider'
 import FreeShippingBanner from '../../components/FreeShipmentBanner'
+import PopularProducts from '../../components/PopularProducts'
+import HeroBanner from '../../components/HeroBanner'
 
 function Home() {
   return (
@@ -16,6 +18,13 @@ function Home() {
             <div>
               <FreeShippingBanner />
             </div>
+            <div>
+              <PopularProducts />
+            </div>
+            <div>
+              <HeroBanner />
+            </div>
+            
           </div>
         </div>
   )
