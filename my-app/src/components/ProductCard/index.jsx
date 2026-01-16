@@ -6,13 +6,11 @@ export default function ProductCard() {
                     shadow-md hover:shadow-lg transition 
                     overflow-hidden relative text-gray-900 dark:text-gray-100">
       
-      {/* Discount badge */}
       <span className="absolute top-3 left-3 bg-red-500 text-white 
                        text-sm font-semibold px-2 py-1 rounded-full z-10">
         8%
       </span>
 
-      {/* Image section */}
       <div className="relative group">
         <img
           src="https://images.unsplash.com/photo-1542272604-787c3835535d"
@@ -21,7 +19,6 @@ export default function ProductCard() {
                      transition-transform duration-300"
         />
 
-        {/* Hover icons */}
         <div className="absolute right-3 top-1/2 -translate-y-1/2 
                         space-y-3 opacity-0 group-hover:opacity-100 transition">
           <IconButton icon={<FaExpandAlt />} />
@@ -30,7 +27,6 @@ export default function ProductCard() {
         </div>
       </div>
 
-      {/* Content */}
       <div className="p-4">
         <p className="text-sm text-gray-500 dark:text-gray-400">
           Flying Machine
@@ -40,14 +36,12 @@ export default function ProductCard() {
           Women Wide Leg Killer Jeans
         </h3>
 
-        {/* Rating */}
         <div className="flex items-center gap-1 my-2">
           {[...Array(5)].map((_, i) => (
             <FaStar key={i} className="text-yellow-400 text-sm" />
           ))}
         </div>
 
-        {/* Price */}
         <div className="flex items-center justify-between my-3">
           <span className="text-gray-400 line-through">
             ₹1999.00
@@ -57,7 +51,6 @@ export default function ProductCard() {
           </span>
         </div>
 
-        {/* Add to cart */}
         <button
           className="w-full border-2 border-red-500 text-red-500 
                      py-2 rounded-lg font-semibold

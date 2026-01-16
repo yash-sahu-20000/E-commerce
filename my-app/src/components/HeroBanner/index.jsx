@@ -1,23 +1,32 @@
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
-
+/* ===================== */
+/* HERO BANNER */
+/* ===================== */
 export default function HeroBanner() {
   return (
-    <section className="mx-auto py-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <section className="mx-auto py-6 px-4">
+      {/* FLEX LAYOUT */}
+      <div className="flex flex-col lg:flex-row gap-6">
 
-        <div className="lg:col-span-2 relative rounded-xl overflow-hidden">
+        {/* LEFT SLIDER */}
+        <div className="relative flex-[2] rounded-xl overflow-hidden">
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}
-            navigation={{ nextEl: ".hero-next", prevEl: ".hero-prev" }}
+            navigation={{
+              nextEl: ".hero-next",
+              prevEl: ".hero-prev",
+            }}
             pagination={{ clickable: true }}
-            autoplay={{ delay: 4000 }}
+            autoplay={{ delay: 4000, disableOnInteraction: false }}
             loop
+            className="h-full"
           >
             <SwiperSlide>
               <HeroSlide
@@ -36,6 +45,7 @@ export default function HeroBanner() {
             </SwiperSlide>
           </Swiper>
 
+          {/* NAV BUTTONS */}
           <NavBtn className="hero-prev left-4">
             <FaChevronLeft />
           </NavBtn>
@@ -44,7 +54,8 @@ export default function HeroBanner() {
           </NavBtn>
         </div>
 
-        <div className="flex flex-col gap-6">
+        {/* RIGHT SIDE BANNERS */}
+        <div className="flex flex-col gap-6 flex-[1]">
           <SideBanner
             image="https://images.unsplash.com/photo-1517841905240-472988babdf9"
             title="Buy women with low price"
@@ -59,28 +70,34 @@ export default function HeroBanner() {
             image="https://images.unsplash.com/photo-1600180758890-6b94519a8ba6"
             title="Buy Men's Footwear with low price"
             price="₹1500"
-          />          
+          />
           <SideBanner
             image="https://images.unsplash.com/photo-1600180758890-6b94519a8ba6"
             title="Buy Men's Footwear with low price"
             price="₹1500"
-          />          
+          />
           <SideBanner
             image="https://images.unsplash.com/photo-1600180758890-6b94519a8ba6"
             title="Buy Men's Footwear with low price"
             price="₹1500"
           />
         </div>
+
       </div>
     </section>
   );
 }
 
+/* ===================== */
+/* HERO SLIDE */
+/* ===================== */
 function HeroSlide({ image, title, price }) {
   return (
-    <div className="flex items-center h-full rounded-xl overflow-hidden bg-white
-       dark:bg-gray-800 transition-colors shadow-sm hover:shadow-md">
-
+    <div
+      className="flex items-center h-full rounded-xl overflow-hidden
+      bg-white dark:bg-gray-800 transition-colors
+      shadow-md hover:shadow-lg"
+    >
       <img
         src={image}
         alt="banner"
@@ -92,7 +109,7 @@ function HeroSlide({ image, title, price }) {
           Big saving days sale
         </p>
 
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white leading-snug">
           {title}
         </h1>
 
@@ -103,7 +120,7 @@ function HeroSlide({ image, title, price }) {
           </span>
         </p>
 
-        <button className="mt-6 bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-semibold">
+        <button className="mt-6 bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-semibold transition">
           SHOP NOW
         </button>
       </div>
@@ -111,18 +128,23 @@ function HeroSlide({ image, title, price }) {
   );
 }
 
+/* ===================== */
+/* SIDE BANNER */
+/* ===================== */
 function SideBanner({ image, title, price }) {
   return (
-    <div className="flex items-center rounded-xl p-4
-      bg-white dark:bg-gray-800 transition-colors shadow-md hover:shadow-lg">
-
+    <div
+      className="flex items-center gap-4 p-4 rounded-xl
+      bg-white dark:bg-gray-800 transition-colors
+      shadow-md hover:shadow-lg"
+    >
       <img
         src={image}
         alt="side-banner"
         className="w-24 h-24 object-cover rounded-lg"
       />
 
-      <div className="ml-4">
+      <div>
         <p className="font-semibold text-gray-800 dark:text-white">
           {title}
         </p>
@@ -143,7 +165,7 @@ function NavBtn({ children, className }) {
     <button
       className={`absolute top-1/2 -translate-y-1/2 z-10
       bg-white dark:bg-gray-700 dark:text-white
-      p-2 rounded-full shadow transition ${className}`}
+      p-2 rounded-full shadow hover:scale-105 transition ${className}`}
     >
       {children}
     </button>

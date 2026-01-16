@@ -5,6 +5,7 @@ import CategorySlider from '../../components/CategorySlider'
 import FreeShippingBanner from '../../components/FreeShipmentBanner'
 import PopularProducts from '../../components/PopularProducts'
 import HeroBanner from '../../components/HeroBanner'
+import Footer from '../../components/Footer'
 
 function Home() {
   return (
@@ -19,10 +20,16 @@ function Home() {
               <FreeShippingBanner />
             </div>
             <div>
-              <PopularProducts />
+              <PopularProducts title="Popular Products" />
+            </div>
+            <div>
+              <PopularProducts title="Featured Products" />
             </div>
             <div>
               <HeroBanner />
+            </div>
+            <div>
+              <Footer />
             </div>
             
           </div>

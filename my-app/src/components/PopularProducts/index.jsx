@@ -16,7 +16,7 @@ const TABS = [
   "Wellness",
 ];
 
-export default function PopularProducts() {
+export default function PopularProducts(props) {
   const [activeTab, setActiveTab] = useState("Fashion");
 
   return (
@@ -24,7 +24,7 @@ export default function PopularProducts() {
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
         <div>
           <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
-            Popular Products
+            {props.title}
           </h2>
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Do not miss the current offers until the end of March.
