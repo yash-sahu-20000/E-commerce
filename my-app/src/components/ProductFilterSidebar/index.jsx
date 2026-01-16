@@ -1,3 +1,4 @@
+import Slider from "@mui/material/Slider";
 import { useState } from "react";
 import { FaStar,FaChevronUp } from "react-icons/fa";
 
@@ -11,9 +12,10 @@ const categories = [
 ];
 
 export default function ProductFilterSidebar() {
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [price, setPrice] = useState(60000);
-  const [rating, setRating] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [priceRange, setPriceRange] = useState([0, 60000]);
+
+    const [rating, setRating] = useState(null);
 
   return (
     <aside className="w-full lg:w-72 bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm">
@@ -35,19 +37,23 @@ export default function ProductFilterSidebar() {
 
 
       <Section title="Filter By Price">
-        <input
-          type="range"
-          min="0"
-          max="60000"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          className="w-full accent-red-500"
+        <Slider
+            value={priceRange}
+            onChange={(e, newValue) => setPriceRange(newValue)}
+            min={0}
+            max={60000}
+            step={500}
+            valueLabelDisplay="auto"
+            sx={{
+                color: "red",
+            }}
         />
 
         <div className="flex justify-between text-sm mt-2 text-gray-700 dark:text-gray-300">
-          <span>From: Rs. 0</span>
-          <span>To: Rs. {price}</span>
+        <span>From: Rs. {priceRange[0]}</span>
+        <span>To: Rs. {priceRange[1]}</span>
         </div>
+
       </Section>
 
       <Section title="Filter By Rating">
