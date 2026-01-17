@@ -12,10 +12,8 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 export default function HeroBanner() {
   return (
     <section className="mx-auto py-6 px-4">
-      {/* FLEX LAYOUT */}
       <div className="flex flex-col lg:flex-row gap-6">
 
-        {/* LEFT SLIDER */}
         <div className="relative flex-[2] rounded-xl overflow-hidden">
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}
@@ -45,7 +43,6 @@ export default function HeroBanner() {
             </SwiperSlide>
           </Swiper>
 
-          {/* NAV BUTTONS */}
           <NavBtn className="hero-prev left-4">
             <FaChevronLeft />
           </NavBtn>
@@ -54,7 +51,6 @@ export default function HeroBanner() {
           </NavBtn>
         </div>
 
-        {/* RIGHT SIDE BANNERS */}
         <div className="flex flex-col gap-6 flex-[1]">
           <SideBanner
             image="https://images.unsplash.com/photo-1517841905240-472988babdf9"
@@ -88,9 +84,6 @@ export default function HeroBanner() {
   );
 }
 
-/* ===================== */
-/* HERO SLIDE */
-/* ===================== */
 function HeroSlide({ image, title, price }) {
   return (
     <div
@@ -128,9 +121,6 @@ function HeroSlide({ image, title, price }) {
   );
 }
 
-/* ===================== */
-/* SIDE BANNER */
-/* ===================== */
 function SideBanner({ image, title, price }) {
   return (
     <div
@@ -157,9 +147,6 @@ function SideBanner({ image, title, price }) {
   );
 }
 
-/* ===================== */
-/* NAV BUTTON */
-/* ===================== */
 function NavBtn({ children, className }) {
   return (
     <button
