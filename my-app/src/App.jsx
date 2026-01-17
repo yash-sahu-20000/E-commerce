@@ -5,6 +5,9 @@ import About from "./pages/About"
 import Footer from "./components/Footer"
 import ProductListing from "./pages/ProductListing"
 import ProductDescription from "./pages/ProductDescription"
+import Login from "./pages/Login"
+import Register from "./pages/Register"
+import Cart from "./pages/Cart"
 
 export default function App() {
   return (
@@ -14,7 +17,10 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/productlisting" element={<ProductListing />} />
-        <Route path="/productdescription" element={<ProductDescription />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/productdescription/:id" element={<ProductDescription />} />
       </Routes>
 
       <Footer/>

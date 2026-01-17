@@ -119,9 +119,11 @@ export default function Header() {
             <div className="flex items-center gap-1  hover:scale-110 hover:underline transition-all duration-300">
               <FaHeart/>Wishlist
             </div>
-            <div className="flex items-center gap-1 hover:scale-110 hover:underline transition-all duration-300">
-              <FaShoppingCart/> Cart
-            </div>
+            <Link to="/cart">
+              <div className="flex items-center gap-1 hover:scale-110 hover:underline transition-all duration-300">
+                <FaShoppingCart/> Cart
+              </div>
+            </Link>
           </div>
         </div>
 

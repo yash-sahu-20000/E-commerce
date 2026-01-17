@@ -5,7 +5,6 @@ import CategorySlider from '../../components/CategorySlider'
 import FreeShippingBanner from '../../components/FreeShipmentBanner'
 import PopularProducts from '../../components/PopularProducts'
 import HeroBanner from '../../components/HeroBanner'
-import Footer from '../../components/Footer'
 
 function Home() {
   return (

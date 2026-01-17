@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Button from "@mui/material/Button";
 import CategoryPanel from "../CategoryPanel";
 import { RiMenu2Fill } from "react-icons/ri";
 import {
@@ -36,7 +35,7 @@ function Navigation() {
   
     <nav className="flex items-center gap-6 py-3 justify-between bg-white dark:bg-gray-900 z-20 px-4 shadow-md">
       
-      <Button
+      <button
         color="inherit"
         startIcon={<RiMenu2Fill />}
         endIcon={<FaAngleDown />}
@@ -44,7 +43,7 @@ function Navigation() {
         onClick={()=>setOpenCategoryPanel(true)}
       >
         <span color="inherit" className=" text-gray-700 dark:text-gray-300 hidden md:inline">Shop by Categories</span>
-      </Button>
+      </button>
         <ul className="hidden md:flex gap-6 text-gray-700 dark:text-gray-300 font-medium ">
             {NAV_ITEMS.map((item) => (
                 <li key={item} className="relative group">
@@ -77,9 +76,9 @@ function Navigation() {
       <ul className="flex md:hidden gap-1">
         {MOBILE_ICONS.map(({ icon, label }) => (
           <li key={label} className="relative group">
-            <Button aria-label={label} color="inherit" className="text-gray-700 dark:text-white" onClick={()=>handleMobileItemClick(label)}>
+            <button aria-label={label} color="inherit" className="text-gray-700 dark:text-white" onClick={()=>handleMobileItemClick(label)}>
               {icon}
-            </Button>
+            </button>
                 {openMobileItem === label && (
                     <div className=" absolute top-full left-0 min-w-[100] z-10 rounded-lg shadow-lg py-1 px-2 bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-200">
                         <ul className="space-y-2">

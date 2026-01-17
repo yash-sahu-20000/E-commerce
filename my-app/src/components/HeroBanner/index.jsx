@@ -6,9 +6,6 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
-/* ===================== */
-/* HERO BANNER */
-/* ===================== */
 export default function HeroBanner() {
   return (
     <section className="mx-auto py-6 px-4">

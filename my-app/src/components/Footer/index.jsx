@@ -12,7 +12,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300">
+    <footer className="bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700">
       
       <div className="max-w-7xl mx-auto px-6 py-12 flex flex-wrap justify-between text-center gap-8">
         {[
@@ -35,10 +35,8 @@ export default function Footer() {
 
       <div className="border-t border-gray-200 dark:border-gray-700" />
 
-      {/* MAIN FOOTER */}
       <div className="max-w-7xl mx-auto px-6 py-12 flex flex-wrap gap-10">
         
-        {/* CONTACT */}
         <div className="flex-1 min-w-[220px]">
           <h3 className="font-semibold text-lg mb-4">Contact us</h3>
           <p>Classyshop - Mega Super Store</p>
@@ -56,7 +54,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* PRODUCTS */}
         <div className="flex-1 min-w-[180px]">
           <h3 className="font-semibold text-lg mb-4">Products</h3>
           <ul className="space-y-2">
@@ -69,7 +66,6 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* COMPANY */}
         <div className="flex-1 min-w-[200px]">
           <h3 className="font-semibold text-lg mb-4">Our company</h3>
           <ul className="space-y-2">
@@ -82,7 +78,6 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* NEWSLETTER */}
         <div className="flex-1 min-w-[260px]">
           <h3 className="font-semibold text-lg mb-4">
             Subscribe to newsletter
