@@ -3,9 +3,12 @@ import { Link } from "react-router-dom"
 import Search from "../Search"
 import { FaHeart, FaShoppingCart } from "react-icons/fa"
 import Navigation from "../Navigation"
+import { useAuth } from "../../context/AuthContext"
 
 export default function Header() {
   const [darkMode, setDarkMode] = useState(false)
+  const { user, isAuthenticated, logout } = useAuth();
+
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme")
@@ -35,6 +38,34 @@ export default function Header() {
 
           <div className="flex items-center justify-between md:justify-end gap-4">
             <ul className="flex gap-3">
+            {user ? (
+                <>
+                  <span>Hi, {user.name}</span>
+                  <li>
+                    <Link
+                        to="/"
+                        onClick={logout}
+                        className="px-4 py-1.5 rounded-full text-sm font-medium
+                                  hover:shadow-md dark:hover:shadow-white dark:hover:shadow-sm
+                                  transition-all duration-300 hover:scale-105 border-r-2 border-gray-400 dark:border-gray-600">
+
+                        Logout
+                      </Link>             
+                  </li>
+                  <li>
+                    <Link
+                        to="/profile"
+                        className="px-4 py-1.5 rounded-full text-sm font-medium
+                                  hover:shadow-md dark:hover:shadow-white dark:hover:shadow-sm
+                                  transition-all duration-300 hover:scale-105 border-r-2 border-gray-400 dark:border-gray-600">
+
+                        My Profile
+                      </Link>             
+                  </li>
+                </>
+              ) : 
+            (
+            <>
               <li>
                 <Link
                     to="/login"
@@ -44,12 +75,15 @@ export default function Header() {
 
                     Login
                   </Link>             
-           </li>
+              </li>
               <li>
                 <Link className="px-4 py-1.5 rounded-full text-sm font-medium
                               hover:shadow-md dark:hover:shadow-white dark:hover:shadow-sm
                               transition-all duration-300 hover:scale-105 border-r-2 border-gray-400 dark:border-gray-600" to="/register">Register</Link>
               </li>
+            </>
+          )}
+
               <li className="hidden md:block">
                 <Link className="px-4 py-1.5 rounded-full text-sm font-medium
                               hover:shadow-md dark:hover:shadow-white dark:hover:shadow-sm

@@ -1,15 +1,16 @@
 import { FaStar, FaShoppingCart } from "react-icons/fa";
+import { useCart } from "../../context/CartContext";
 
-export default function ProductListCard({ product }) {
-  const {
-    image,
-    brand,
-    title,
-    rating,
-    oldPrice,
-    price,
-    discount,
-  } = product;
+export default function ProductListCard( {product} ) {
+  const { id, image, brand, title, rating, oldPrice, price, discount } = product;
+
+  const { cart, dispatch } = useCart();
+
+  const inCart = cart?.some(item => item.id === id);
+
+  const addToCart = () => {
+    dispatch({ type: "ADD_TO_CART", payload: {id :product.id} });
+  };
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-md transition overflow-hidden">
@@ -19,7 +20,6 @@ export default function ProductListCard({ product }) {
           alt={title}
           className="w-full h-72 object-cover hover:scale-105 transition-transform duration-300"
         />
-
         {discount && (
           <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
             {discount}%
@@ -29,34 +29,33 @@ export default function ProductListCard({ product }) {
 
       <div className="p-4">
         <p className="text-sm text-gray-500 dark:text-gray-400">{brand}</p>
-
         <h3 className="font-semibold text-gray-800 dark:text-white truncate">
           {title}
         </h3>
 
         <div className="flex items-center gap-1 my-2">
-          {[...Array(5)].map((_, i) => (
+          {[...Array(rating)].map((_, i) => (
             <FaStar
               key={i}
-              className={
-                i < rating ? "text-yellow-400" : "text-gray-300"
-              }
+              className={i < rating ? "text-yellow-400" : "text-gray-300"}
             />
           ))}
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-gray-400 line-through">
-            ₹{oldPrice}
-          </span>
-          <span className="text-red-500 font-semibold text-lg">
-            ₹{price}
-          </span>
+          <span className="text-gray-400 line-through">₹{oldPrice}</span>
+          <span className="text-red-500 font-semibold text-lg">₹{price}</span>
         </div>
 
-        <button className="mt-4 w-full border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition rounded-lg py-2 flex items-center justify-center gap-2">
+        <button
+          onClick={()=>addToCart()}
+          disabled={inCart}
+          className={`mt-4 w-full border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition rounded-lg py-2 flex items-center justify-center gap-2 ${
+            inCart ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+        >
           <FaShoppingCart />
-          ADD TO CART
+          {inCart ? "Added" : "Add to Cart"}
         </button>
       </div>
     </div>

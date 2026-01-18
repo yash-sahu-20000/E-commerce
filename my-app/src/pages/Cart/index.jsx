@@ -1,108 +1,37 @@
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
+import { useCart } from "../../context/CartContext";
 
 function Cart() {
   const ITEMS_PER_PAGE = 3;
-
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Premium Cotton T-Shirt",
-      price: 799,
-      quantity: 1,
-      image:
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600",
-    },
-    {
-      id: 2,
-      name: "Stylish Sneakers",
-      price: 2499,
-      quantity: 1,
-      image:
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600",
-    },
-    {
-      id: 3,
-      name: "Stylish Sneakers",
-      price: 2499,
-      quantity: 1,
-      image:
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600",
-    },
-    {
-      id: 4,
-      name: "Stylish Sneakers",
-      price: 2499,
-      quantity: 1,
-      image:
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600",
-    },
-    {
-      id: 5,
-      name: "Stylish Sneakers",
-      price: 2499,
-      quantity: 1,
-      image:
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600",
-    },
-    {
-      id: 6,
-      name: "Stylish Sneakers",
-      price: 2499,
-      quantity: 1,
-      image:
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600",
-    },
-    {
-      id: 7,
-      name: "Stylish Sneakers",
-      price: 2499,
-      quantity: 1,
-      image:
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600",
-    },
-    {
-      id: 8,
-      name: "Stylish Sneakers",
-      price: 2499,
-      quantity: 1,
-      image:
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600",
-    },
-  ]);
-
+  const { cart, dispatch } = useCart();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.ceil(cartItems.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(cart.length / ITEMS_PER_PAGE);
 
-  const paginatedItems = cartItems.slice(
+  const paginatedItems = cart.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
 
   const updateQty = (id, qty) => {
-    setCartItems((items) =>
-      items.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, qty) }
-          : item
-      )
-    );
+    if (qty < 1) return; 
+    dispatch({ type: "UPDATE_QTY", payload: { id, qty } });
   };
 
   const removeItem = (id) => {
-    setCartItems((items) => {
-      const updated = items.filter((item) => item.id !== id);
-      const newTotalPages = Math.ceil(updated.length / ITEMS_PER_PAGE);
-      if (currentPage > newTotalPages) {
-        setCurrentPage(Math.max(1, newTotalPages));
-      }
-      return updated;
-    });
+    dispatch({ type: "REMOVE_FROM_CART", payload: id });
+
+    const newTotalPages = Math.ceil((cart.length - 1) / ITEMS_PER_PAGE);
+    if (currentPage > newTotalPages) {
+      setCurrentPage(Math.max(1, newTotalPages));
+    }
   };
 
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+
+
+  const subtotal = cart.reduce(
+    (sum, item) => sum + item.price * item.qty,
     0
   );
 
@@ -111,7 +40,7 @@ function Cart() {
       <div className="max-w-[95%] mx-auto px-4 py-6">
         <h2 className="text-2xl font-bold mb-6">Shopping Cart</h2>
 
-        {cartItems.length === 0 ? (
+        {cart.length === 0 ? (
           <p className="text-center">Your cart is empty.</p>
         ) : (
           <div className="flex flex-col lg:flex-row gap-6">
@@ -134,18 +63,16 @@ function Cart() {
                     <div className="flex items-center gap-2 mt-3">
                       <button
                         onClick={() =>
-                          updateQty(item.id, item.quantity - 1)
+                          updateQty(item.id, item.qty - 1)
                         }
                         className="px-3 border rounded hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
                         −
                       </button>
-                      <span className="w-8 text-center">
-                        {item.quantity}
-                      </span>
+                      <span className="w-8 text-center">{item.qty}</span>
                       <button
                         onClick={() =>
-                          updateQty(item.id, item.quantity + 1)
+                          updateQty(item.id, item.qty + 1)
                         }
                         className="px-3 border rounded hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
@@ -163,6 +90,7 @@ function Cart() {
                 </div>
               ))}
 
+              {/* Pagination */}
               {totalPages > 1 && (
                 <div className="flex justify-center items-center gap-4 mt-4">
                   <button
@@ -181,9 +109,7 @@ function Cart() {
 
                   <button
                     onClick={() =>
-                      setCurrentPage((p) =>
-                        Math.min(totalPages, p + 1)
-                      )
+                      setCurrentPage((p) => Math.min(totalPages, p + 1))
                     }
                     disabled={currentPage === totalPages}
                     className="px-4 py-1 border rounded disabled:opacity-40 hover:bg-red-500 hover:text-white"
@@ -194,6 +120,7 @@ function Cart() {
               )}
             </div>
 
+            {/* Order Summary */}
             <div className="w-full lg:w-1/2 h-fit border rounded-lg p-5 bg-white dark:bg-gray-800 dark:border-gray-700 shadow">
               <h3 className="font-semibold text-lg mb-4 text-center border-b pb-2">
                 Order Summary
@@ -201,7 +128,7 @@ function Cart() {
 
               <div className="flex justify-between text-sm mb-3">
                 <span>Total Items</span>
-                <span>{cartItems.length}</span>
+                <span>{cart.length}</span>
               </div>
 
               <div className="flex justify-between text-sm mb-3">
@@ -224,7 +151,10 @@ function Cart() {
                 <span>₹{subtotal}</span>
               </div>
 
-              <button className="w-full text-white bg-red-500 py-3 rounded-md font-semibold hover:bg-[#ce1b1b] transition">
+              <button
+                onClick={() => alert("Proceed to checkout")}
+                className="w-full text-white bg-red-500 py-3 rounded-md font-semibold hover:bg-[#ce1b1b] transition"
+              >
                 Proceed to Checkout
               </button>
             </div>

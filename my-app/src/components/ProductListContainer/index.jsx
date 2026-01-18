@@ -10,104 +10,65 @@ const products = [
       "https://rukminim2.flixcart.com/image/612/612/xif0q/sweatshirt/x/c/t/s-flsw-dht002-beige-spoweary-original-imahhm45zdpyyegc.jpeg?q=70",
     brand: "Flying Machine",
     title: "Women Wide Leg Killer",
-    description: "Experience ultimate comfort and style with the Flying Machine Women Wide Leg Killer Jeans. Crafted from high-quality denim, these jeans feature a trendy wide-leg design that flatters every figure. Perfect for casual outings or a day at the office, they offer a relaxed fit without compromising on fashion. Pair them with your favorite top and accessories for a chic look that turns heads wherever you go.",
+    description:
+      "Experience ultimate comfort and style with these wide-leg jeans. Perfect for casual or office outings.",
     rating: 4,
     oldPrice: 799,
     price: 500,
     discount: 8,
   },
-    {
-    id: 1,
-    image:
-      "https://rukminim2.flixcart.com/image/612/612/xif0q/sweatshirt/x/c/t/s-flsw-dht002-beige-spoweary-original-imahhm45zdpyyegc.jpeg?q=70",
-    brand: "Flying Machine",
-    title: "Women Wide Leg Killer",
-    description: "Experience ultimate comfort and style with the Flying Machine Women Wide Leg Killer Jeans. Crafted from high-quality denim, these jeans feature a trendy wide-leg design that flatters every figure. Perfect for casual outings or a day at the office, they offer a relaxed fit without compromising on fashion. Pair them with your favorite top and accessories for a chic look that turns heads wherever you go.",
-    rating: 4,
-    oldPrice: 799,
-    price: 500,
-    discount: 8,
-  },  {
-    id: 1,
-    image:
-      "https://rukminim2.flixcart.com/image/612/612/xif0q/sweatshirt/x/c/t/s-flsw-dht002-beige-spoweary-original-imahhm45zdpyyegc.jpeg?q=70",
-    brand: "Flying Machine",
-    title: "Women Wide Leg Killer",
-    description: "Experience ultimate comfort and style with the Flying Machine Women Wide Leg Killer Jeans. Crafted from high-quality denim, these jeans feature a trendy wide-leg design that flatters every figure. Perfect for casual outings or a day at the office, they offer a relaxed fit without compromising on fashion. Pair them with your favorite top and accessories for a chic look that turns heads wherever you go.",
-    rating: 4,
-    oldPrice: 799,
-    price: 500,
-    discount: 8,
-  },  {
-    id: 1,
-    image:
-      "https://rukminim2.flixcart.com/image/612/612/xif0q/sweatshirt/x/c/t/s-flsw-dht002-beige-spoweary-original-imahhm45zdpyyegc.jpeg?q=70",
-    brand: "Flying Machine",
-    title: "Women Wide Leg Killer",
-    description: "Experience ultimate comfort and style with the Flying Machine Women Wide Leg Killer Jeans. Crafted from high-quality denim, these jeans feature a trendy wide-leg design that flatters every figure. Perfect for casual outings or a day at the office, they offer a relaxed fit without compromising on fashion. Pair them with your favorite top and accessories for a chic look that turns heads wherever you go.",
-    rating: 4,
-    oldPrice: 799,
-    price: 500,
-    discount: 8,
-  },  {
-    id: 1,
-    image:
-      "https://rukminim2.flixcart.com/image/612/612/xif0q/sweatshirt/x/c/t/s-flsw-dht002-beige-spoweary-original-imahhm45zdpyyegc.jpeg?q=70",
-    brand: "Flying Machine",
-    title: "Women Wide Leg Killer",
-    description: "Experience ultimate comfort and style with the Flying Machine Women Wide Leg Killer Jeans. Crafted from high-quality denim, these jeans feature a trendy wide-leg design that flatters every figure. Perfect for casual outings or a day at the office, they offer a relaxed fit without compromising on fashion. Pair them with your favorite top and accessories for a chic look that turns heads wherever you go.",
-    rating: 4,
-    oldPrice: 799,
-    price: 500,
-    discount: 8,
-  },  {
-    id: 1,
-    image:
-      "https://rukminim2.flixcart.com/image/612/612/xif0q/sweatshirt/x/c/t/s-flsw-dht002-beige-spoweary-original-imahhm45zdpyyegc.jpeg?q=70",
-    brand: "Flying Machine",
-    title: "Women Wide Leg Killer",
-    description: "Experience ultimate comfort and style with the Flying Machine Women Wide Leg Killer Jeans. Crafted from high-quality denim, these jeans feature a trendy wide-leg design that flatters every figure. Perfect for casual outings or a day at the office, they offer a relaxed fit without compromising on fashion. Pair them with your favorite top and accessories for a chic look that turns heads wherever you go.",
-    rating: 4,
-    oldPrice: 799,
-    price: 500,
-    discount: 8,
-  },  {
-    id: 1,
-    image:
-      "https://rukminim2.flixcart.com/image/612/612/xif0q/sweatshirt/x/c/t/s-flsw-dht002-beige-spoweary-original-imahhm45zdpyyegc.jpeg?q=70",
-    brand: "Flying Machine",
-    title: "Women Wide Leg Killer",
-    description: "Experience ultimate comfort and style with the Flying Machine Women Wide Leg Killer Jeans. Crafted from high-quality denim, these jeans feature a trendy wide-leg design that flatters every figure. Perfect for casual outings or a day at the office, they offer a relaxed fit without compromising on fashion. Pair them with your favorite top and accessories for a chic look that turns heads wherever you go.",
-    rating: 4,
-    oldPrice: 799,
-    price: 500,
-    discount: 8,
-  },  
   {
-    id: 1,
+    id: 2,
     image:
-      "https://rukminim2.flixcart.com/image/612/612/xif0q/sweatshirt/x/c/t/s-flsw-dht002-beige-spoweary-original-imahhm45zdpyyegc.jpeg?q=70",
-    brand: "Flying Machine",
-    title: "Women Wide Leg Killer",
-    description: "Experience ultimate comfort and style with the Flying Machine Women Wide Leg Killer Jeans. Crafted from high-quality denim, these jeans feature a trendy wide-leg design that flatters every figure. Perfect for casual outings or a day at the office, they offer a relaxed fit without compromising on fashion. Pair them with your favorite top and accessories for a chic look that turns heads wherever you go.",
-    rating: 4,
-    oldPrice: 799,
-    price: 500,
-    discount: 8,
-  },  {
-    id: 1,
-    image:
-      "https://rukminim2.flixcart.com/image/612/612/xif0q/sweatshirt/x/c/t/s-flsw-dht002-beige-spoweary-original-imahhm45zdpyyegc.jpeg?q=70",
-    brand: "Flying Machine",
-    title: "Women Wide Leg Killer",
-    description: "Experience ultimate comfort and style with the Flying Machine Women Wide Leg Killer Jeans. Crafted from high-quality denim, these jeans feature a trendy wide-leg design that flatters every figure. Perfect for casual outings or a day at the office, they offer a relaxed fit without compromising on fashion. Pair them with your favorite top and accessories for a chic look that turns heads wherever you go.",
-    rating: 4,
-    oldPrice: 799,
-    price: 500,
-    discount: 8,
+      "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/j/o/v/xl-ts85-vebnor-original-imahhsn6swysfz9p.jpeg?q=70",
+       brand: "Roadster",
+    title: "Casual T-Shirt",
+    description:
+      "Comfortable cotton t-shirt, perfect for daily wear and casual outings.",
+    rating: 5,
+    oldPrice: 699,
+    price: 399,
+    discount: 43,
   },
-  
+  {
+    id: 3,
+    image:
+      "https://rukminim2.flixcart.com/image/612/612/xif0q/shirt/n/q/s/l-frml-st2-vebnor-original-imahjrx47nu9n6tg.jpeg?q=70",
+       brand: "Nike",
+    title: "Sports Shoes",
+    description:
+      "Lightweight running shoes designed for comfort and performance.",
+    rating: 4,
+    oldPrice: 2999,
+    price: 2499,
+    discount: 17,
+  },
+  {
+    id: 4,
+    image:
+      "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/v/u/0/m-659874-try-this-original-imaha4yaggrnszxc.jpeg?q=70",
+      brand: "Fossil",
+    title: "Analog Watch",
+    description: "Elegant analog-digital watch, perfect for formal and casual wear.",
+    rating: 3,
+    oldPrice: 8999,
+    price: 7499,
+    discount: 17,
+  },
+  {
+    id: 5,
+    image:
+      "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/v/u/0/m-659874-try-this-original-imaha4yaggrnszxc.jpeg?q=70",
+        brand: "Wildcraft",
+    title: "Travel Backpack",
+    description: "Durable travel backpack with multiple compartments for daily use.",
+    rating: 5,
+    oldPrice: 3999,
+    price: 2999,
+    discount: 25,
+  },
 ];
+
 
 export default function ProductListContainer() {
 

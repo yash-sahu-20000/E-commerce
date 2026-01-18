@@ -1,6 +1,8 @@
 import { FaHeart, FaShareAlt, FaExpandAlt, FaStar } from "react-icons/fa";
 
-export default function ProductCard() {
+export default function ProductCard(product) {
+    const { id, image, brand, title, rating, oldPrice, price, discount } = product;
+
   return (
     <div className="w-[280px] bg-white dark:bg-gray-800 rounded-xl 
                     shadow-md hover:shadow-lg transition 
@@ -13,7 +15,7 @@ export default function ProductCard() {
 
       <div className="relative group">
         <img
-          src="https://images.unsplash.com/photo-1542272604-787c3835535d"
+          src={image}
           alt="product"
           className="w-full h-[250px] object-cover group-hover:scale-105
                      transition-transform duration-300"
@@ -29,25 +31,25 @@ export default function ProductCard() {
 
       <div className="p-4">
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          Flying Machine
+          {brand}
         </p>
 
         <h3 className="font-semibold truncate">
-          Women Wide Leg Killer Jeans
+          {title}
         </h3>
 
         <div className="flex items-center gap-1 my-2">
-          {[...Array(5)].map((_, i) => (
+          {[...Array(rating)].map((_, i) => (
             <FaStar key={i} className="text-yellow-400 text-sm" />
           ))}
         </div>
 
         <div className="flex items-center justify-between my-3">
           <span className="text-gray-400 line-through">
-            ₹1999.00
+            {oldPrice}
           </span>
           <span className="text-red-500 font-bold text-lg">
-            ₹500.00
+            {price}
           </span>
         </div>
 
