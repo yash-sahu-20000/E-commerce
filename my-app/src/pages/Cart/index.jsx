@@ -115,7 +115,6 @@ function Cart() {
           <p className="text-center">Your cart is empty.</p>
         ) : (
           <div className="flex flex-col lg:flex-row gap-6">
-            {/* CART ITEMS */}
             <div className="w-full lg:w-1/2 flex flex-col gap-4">
               {paginatedItems.map((item) => (
                 <div
@@ -164,7 +163,6 @@ function Cart() {
                 </div>
               ))}
 
-              {/* PAGINATION */}
               {totalPages > 1 && (
                 <div className="flex justify-center items-center gap-4 mt-4">
                   <button
@@ -196,7 +194,6 @@ function Cart() {
               )}
             </div>
 
-            {/* ORDER SUMMARY */}
             <div className="w-full lg:w-1/2 h-fit border rounded-lg p-5 bg-white dark:bg-gray-800 dark:border-gray-700 shadow">
               <h3 className="font-semibold text-lg mb-4 text-center border-b pb-2">
                 Order Summary
