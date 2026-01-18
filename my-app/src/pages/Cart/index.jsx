@@ -94,11 +94,9 @@ function Cart() {
     setCartItems((items) => {
       const updated = items.filter((item) => item.id !== id);
       const newTotalPages = Math.ceil(updated.length / ITEMS_PER_PAGE);
-
       if (currentPage > newTotalPages) {
         setCurrentPage(Math.max(1, newTotalPages));
       }
-
       return updated;
     });
   };
@@ -109,36 +107,37 @@ function Cart() {
   );
 
   return (
-    <div className="bg-primary dark:bg-gray-900 transition-colors dark:text-white">
+    <div className="bg-primary dark:bg-gray-900 min-h-screen transition-colors dark:text-white">
       <div className="max-w-[95%] mx-auto px-4 py-6">
         <h2 className="text-2xl font-bold mb-6">Shopping Cart</h2>
 
         {cartItems.length === 0 ? (
           <p className="text-center">Your cart is empty.</p>
         ) : (
-          <div className="flex gap-6">
-            <div className="w-1/2 flex flex-col gap-4">
+          <div className="flex flex-col lg:flex-row gap-6">
+            {/* CART ITEMS */}
+            <div className="w-full lg:w-1/2 flex flex-col gap-4">
               {paginatedItems.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center gap-4 border rounded-lg p-4 bg-white dark:bg-gray-800 dark:border-gray-700 shadow"
+                  className="flex flex-col sm:flex-row items-start sm:items-center gap-4 border rounded-lg p-4 bg-white dark:bg-gray-800 dark:border-gray-700 shadow"
                 >
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-20 h-20 object-cover rounded-md"
+                    className="w-24 h-24 object-cover rounded-md"
                   />
 
-                  <div className="flex-1">
+                  <div className="flex-1 w-full">
                     <h4 className="font-semibold">{item.name}</h4>
                     <p className="text-sm text-gray-500">₹{item.price}</p>
 
-                    <div className="flex items-center gap-2 mt-2">
+                    <div className="flex items-center gap-2 mt-3">
                       <button
                         onClick={() =>
                           updateQty(item.id, item.quantity - 1)
                         }
-                        className="px-2 border rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="px-3 border rounded hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
                         −
                       </button>
@@ -149,7 +148,7 @@ function Cart() {
                         onClick={() =>
                           updateQty(item.id, item.quantity + 1)
                         }
-                        className="px-2 border rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="px-3 border rounded hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
                         +
                       </button>
@@ -158,13 +157,14 @@ function Cart() {
 
                   <button
                     onClick={() => removeItem(item.id)}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-red-500 hover:text-red-700 self-end sm:self-center"
                   >
                     <FaTrash />
                   </button>
                 </div>
               ))}
 
+              {/* PAGINATION */}
               {totalPages > 1 && (
                 <div className="flex justify-center items-center gap-4 mt-4">
                   <button
@@ -172,11 +172,7 @@ function Cart() {
                       setCurrentPage((p) => Math.max(1, p - 1))
                     }
                     disabled={currentPage === 1}
-                    className="
-                      px-4 py-1 border rounded
-                      disabled:opacity-40
-                      hover:bg-gray-100 dark:hover:bg-gray-700
-                    "
+                    className="px-4 py-1 border rounded disabled:opacity-40 hover:bg-red-500 hover:text-white"
                   >
                     Prev
                   </button>
@@ -192,11 +188,7 @@ function Cart() {
                       )
                     }
                     disabled={currentPage === totalPages}
-                    className="
-                      px-4 py-1 border rounded
-                      disabled:opacity-40
-                      hover:bg-gray-100 dark:hover:bg-gray-700
-                    "
+                    className="px-4 py-1 border rounded disabled:opacity-40 hover:bg-red-500 hover:text-white"
                   >
                     Next
                   </button>
@@ -204,18 +196,29 @@ function Cart() {
               )}
             </div>
 
-            <div className="w-1/2 h-fit border rounded-lg p-5 bg-white dark:bg-gray-800 dark:border-gray-700 shadow">
+            {/* ORDER SUMMARY */}
+            <div className="w-full lg:w-1/2 h-fit border rounded-lg p-5 bg-white dark:bg-gray-800 dark:border-gray-700 shadow">
               <h3 className="font-semibold text-lg mb-4 text-center border-b pb-2">
                 Order Summary
               </h3>
 
-              <div className="flex justify-between text-sm mb-2">
+              <div className="flex justify-between text-sm mb-3">
+                <span>Total Items</span>
+                <span>{cartItems.length}</span>
+              </div>
+
+              <div className="flex justify-between text-sm mb-3">
                 <span>Subtotal</span>
                 <span>₹{subtotal}</span>
               </div>
 
-              <div className="flex justify-between text-sm mb-4">
+              <div className="flex justify-between text-sm mb-3">
                 <span>Shipping</span>
+                <span>Free</span>
+              </div>
+
+              <div className="flex justify-between text-sm mb-3">
+                <span>Tax & GST</span>
                 <span>Free</span>
               </div>
 
@@ -224,7 +227,7 @@ function Cart() {
                 <span>₹{subtotal}</span>
               </div>
 
-              <button className="w-full bg-[#ff5a5a] py-3 rounded-md font-semibold hover:bg-[#f31919] transition">
+              <button className="w-full text-white bg-red-500 py-3 rounded-md font-semibold hover:bg-[#ce1b1b] transition">
                 Proceed to Checkout
               </button>
             </div>
