@@ -55,7 +55,6 @@ function Profile() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         <h2 className="text-2xl font-bold mb-6">My Account</h2>
 
-        {/* Tabs */}
         <div className="flex gap-6 border-b border-gray-200 dark:border-gray-700 mb-6">
           <button
             onClick={() => setActiveTab("profile")}
@@ -86,9 +85,7 @@ function Profile() {
           </button>
         </div>
 
-        {/* Content Card */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-          {/* Edit Profile */}
           {activeTab === "profile" && (
             <form
               onSubmit={handleProfileSubmit}
