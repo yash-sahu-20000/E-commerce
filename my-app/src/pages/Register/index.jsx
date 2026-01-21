@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
+import toast from 'react-hot-toast';
 
 function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -16,12 +17,12 @@ function Register() {
     e.preventDefault();
 
     if (!name || !email || !password || !confirmPassword) {
-      alert("Please fill all fields");
+      toast.error("Please fill all fields");
       return;
     }
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
 
@@ -29,7 +30,7 @@ function Register() {
   };
 
   return (
-    <div className="bg-primary dark:bg-gray-900 transition-colors dark:text-white mx-auto">
+    <div className="bg-primary dark:bg-gray-900 transition-colors dark:text-white mx-auto  min-h-screen">
       <div className="flex items-center justify-center p-4">
         <div className="w-full bg-white dark:bg-gray-800 max-w-md rounded-xl shadow-md p-8">
           <h2 className="text-2xl font-bold text-center mb-8">

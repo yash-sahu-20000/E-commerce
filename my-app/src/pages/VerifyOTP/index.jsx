@@ -16,7 +16,7 @@ function VerifyOTP() {
   };
 
   return (
-    <div className="bg-primary dark:bg-gray-900 transition-colors dark:text-white">
+    <div className="bg-primary dark:bg-gray-900 transition-colors dark:text-white min-h-screen">
       <div className="flex items-center justify-center p-4 ">
         <div className="w-full bg-white dark:bg-gray-800 max-w-md rounded-xl shadow-md p-8">
           

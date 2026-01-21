@@ -45,23 +45,74 @@ export default function Header() {
                     <Link
                         to="/"
                         onClick={logout}
-                        className="px-4 py-1.5 rounded-full text-sm font-medium
+                        className="px-4 py-1.5 rounded-full text-sm font-medium group
                                   hover:shadow-md dark:hover:shadow-white dark:hover:shadow-sm
                                   transition-all duration-300 hover:scale-105 border-r-2 border-gray-400 dark:border-gray-600">
 
                         Logout
-                      </Link>             
+                      </Link>  
+         
                   </li>
-                  <li>
-                    <Link
-                        to="/profile"
-                        className="px-4 py-1.5 rounded-full text-sm font-medium
-                                  hover:shadow-md dark:hover:shadow-white dark:hover:shadow-sm
-                                  transition-all duration-300 hover:scale-105 border-r-2 border-gray-400 dark:border-gray-600">
+                    <li>
+                      <Link
+                          to="/profile"
+                          className="px-4 py-1.5 rounded-full text-sm font-medium group relative
+                                    hover:shadow-md dark:hover:shadow-white dark:hover:shadow-sm
+                                    transition-all duration-300 hover:scale-105 border-r-2 border-gray-400 dark:border-gray-600">
 
-                        My Profile
-                      </Link>             
-                  </li>
+                          My Account
+                        
+                        <div
+                            className="absolute top-full left-0 min-w-[160px] mt-1
+                            bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-200
+                            shadow-lg opacity-0 invisible
+                            group-hover:opacity-100 group-hover:visible
+                            transition-all duration-200 z-10"
+                        >
+                            <ul className="flex flex-col">
+                            <li className="cursor-pointer px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700
+                                        hover:text-gray-900 dark:hover:text-white transition-colors" >
+                          <Link
+                              to="/orders"
+                              className="px-4 py-1.5 text-sm font-medium group
+                                        transition-all duration-300 hover:scale-105  border-gray-400 dark:border-gray-600">
+
+                              Orders
+                            </Link>  
+                            </li>
+                            <li className="cursor-pointer px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700
+                                        hover:text-gray-900 dark:hover:text-white transition-colors">
+                          <Link
+                              to="/profile"
+                              className="px-4 py-1.5 text-sm font-medium group
+                                        transition-all duration-300 hover:scale-105  border-gray-400 dark:border-gray-600">
+
+                              My Profile
+                            </Link>  
+                            </li>
+                            <li className="cursor-pointer px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700
+                                        hover:text-gray-900 dark:hover:text-white transition-colors">
+                          <Link
+                              to="/cart"
+                              className="px-4 py-1.5 text-sm font-medium group
+                                        transition-all duration-300 hover:scale-105  border-gray-400 dark:border-gray-600">
+
+                              Cart
+                            </Link>  
+                            </li>                            <li className="cursor-pointer px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700
+                                        hover:text-gray-900 dark:hover:text-white transition-colors">
+                          <Link
+                              to="/wishlist"
+                              className="px-4 py-1.5 text-sm font-medium group
+                                        transition-all duration-300 hover:scale-105  border-gray-400 dark:border-gray-600">
+
+                              Wishlist
+                            </Link>  
+                            </li>
+                            </ul>
+                        </div>  
+                        </Link>             
+                    </li>
                 </>
               ) : 
             (
@@ -146,19 +197,10 @@ export default function Header() {
             </Link>
           </div>
 
-          <div className="col2 w-[80%] md:w-[40%]">
+          <div className="col2 md:w-[40%]">
             <Search />
           </div>
-          <div className="col3 w-[30%] justify-end gap-4 items-center dark:text-white hidden md:flex hover:cursor-pointer ">
-            <div className="flex items-center gap-1  hover:scale-110 hover:underline transition-all duration-300">
-              <FaHeart/>Wishlist
-            </div>
-            <Link to="/cart">
-              <div className="flex items-center gap-1 hover:scale-110 hover:underline transition-all duration-300">
-                <FaShoppingCart/> Cart
-              </div>
-            </Link>
-          </div>
+
         </div>
 
         <div className="border-b dark:border-gray-700">

@@ -2,7 +2,7 @@ import React from 'react'
 
 function CategorySlider() {
   return (
-    <div className='flex gap-4 flex-wrap'>
+    <div className='flex gap-4 flex-wrap justify-around '>
         <div className="
         p-4
         rounded-2xl

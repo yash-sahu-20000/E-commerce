@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { useCart } from "../../context/CartContext";
+import toast from 'react-hot-toast'
 
 function Cart() {
   const ITEMS_PER_PAGE = 3;
@@ -36,7 +37,7 @@ function Cart() {
   );
 
   return (
-    <div className="bg-primary dark:bg-gray-900 min-h-screen transition-colors dark:text-white">
+    <div className="bg-primary dark:bg-gray-900 min-h-screen transition-colors dark:text-white ">
       <div className="max-w-[95%] mx-auto px-4 py-6">
         <h2 className="text-2xl font-bold mb-6">Shopping Cart</h2>
 
@@ -152,7 +153,7 @@ function Cart() {
               </div>
 
               <button
-                onClick={() => alert("Proceed to checkout")}
+                onClick={() => toast.success("Proceed to checkout")}
                 className="w-full text-white bg-red-500 py-3 rounded-md font-semibold hover:bg-[#ce1b1b] transition"
               >
                 Proceed to Checkout

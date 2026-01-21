@@ -12,6 +12,7 @@ import {
   GiLipstick,
   GiJewelCrown,
 } from "react-icons/gi";
+import Button from "@mui/material/Button";
 
 const NAV_ITEMS = ["Home",  "Fashion",  "Footwear",  "Bag",  "Beauty",  "Wellness", "Jewellery"];
 
@@ -35,7 +36,7 @@ function Navigation() {
   
     <nav className="flex items-center gap-6 py-3 justify-between bg-white dark:bg-gray-900 z-20 px-4 shadow-md">
       
-      <button
+      <Button
         color="inherit"
         startIcon={<RiMenu2Fill />}
         endIcon={<FaAngleDown />}
@@ -43,7 +44,7 @@ function Navigation() {
         onClick={()=>setOpenCategoryPanel(true)}
       >
         <span color="inherit" className=" text-gray-700 dark:text-gray-300 hidden md:inline">Shop by Categories</span>
-      </button>
+      </Button>
         <ul className="hidden md:flex gap-6 text-gray-700 dark:text-gray-300 font-medium ">
             {NAV_ITEMS.map((item) => (
                 <li key={item} className="relative group">

@@ -6,7 +6,7 @@ function ProductDescription() {
     
   return (
 
-    <div className="bg-primary dark:bg-gray-900 transition-colors dark:text-white mx-auto">
+    <div className="bg-primary dark:bg-gray-900 transition-colors dark:text-white mx-auto  min-h-screen">
         <div className="max-w-[95%] mx-auto px-4 py-6 flex flex-col md:flex-row gap-10">
             <ProductImages />
             <ProductInfo />

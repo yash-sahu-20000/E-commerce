@@ -12,6 +12,7 @@ import VerifyOTP from "./pages/VerifyOTP"
 import { Toaster } from "react-hot-toast";
 import Checkout from "./pages/Checkout"
 import Profile from "./pages/Profile"
+import Orders from "./pages/Orders"
 
 
 export default function App() {
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/verifyotp" element={<VerifyOTP />} />
         <Route path="/productdescription/:id" element={<ProductDescription />} />
+        <Route path="/orders/" element={<Orders />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
