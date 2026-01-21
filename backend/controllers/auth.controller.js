@@ -19,3 +19,16 @@ export const login = async (req, res) => {
 
   res.json({ token, user });
 };
+
+export const register = async (req, res) => {
+  const { name, email, password } = req.body;
+  const hashed = await bcrypt.hash(password, 12);
+  const user = await User.findOne({ email });
+  if (user) return res.status(400).json({ message: 'User exists' });
+
+  const newUser = new User({ name, email, password: hashed, role: 'admin' });
+  await newUser.save();
+
+  const token = jwt.sign({ id: newUser._id, role: newUser.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
+  res.json({ token, user: { id: newUser._id, name, email, role: newUser.role } });
+};

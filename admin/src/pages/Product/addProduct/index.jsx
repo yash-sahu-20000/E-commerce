@@ -1,6 +1,8 @@
+
 import { useState } from "react";
 import Button from "@mui/material/Button";
-import toast from 'react-hot-toast'
+import toast from "react-hot-toast";
+import api from "../../../api/axios";
 
 export default function AddProduct() {
   const [product, setProduct] = useState({
@@ -41,10 +43,41 @@ export default function AddProduct() {
     setProduct({ ...product, images: updatedImages });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("PRODUCT DATA:", product);
+    const formData = new FormData();
+    formData.append("title", product.title);
+    formData.append("category", product.category);
+    formData.append("price", product.price);
+    formData.append("stock", product.stock);
+    formData.append("status", product.status);
+    formData.append("description", product.description);
+
+    product.images.forEach((img) => {
+      formData.append("images", img.file); 
+    });
+
+    try {
+      const res = await api.post("/products", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.success("Product added successfully!");
+      setProduct({
+        title: "",
+        category: "",
+        price: "",
+        stock: "",
+        status: "active",
+        description: "",
+        images: [],
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to add product");
+    }
   };
 
   return (
@@ -76,7 +109,7 @@ export default function AddProduct() {
             name="title"
             value={product.title}
             onChange={handleChange}
-            placeholder="Nike Air Max"
+            placeholder="Product Name"
             className="w-full px-4 py-2 rounded-lg border
             bg-gray-50 dark:bg-gray-800
             text-gray-700 dark:text-gray-200

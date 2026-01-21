@@ -26,6 +26,19 @@ export function AuthProvider({ children }) {
     setAdmin(null);
   };
 
+  const register = async (formData) => {
+  try {
+    const res = await api.post('/auth/register'); 
+    login(res.data); 
+    return res.data;
+  } catch (err) {
+    toast.error('Registration failed');
+    throw err;
+  }
+};
+
+
+
   return (
     <AuthContext.Provider 
     value={{

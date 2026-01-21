@@ -34,7 +34,10 @@ export default function AdminRegister() {
     setLoading(true);
 
     try {
-      navigate("/admin/login");
+      const res = await register(formData);
+      toast.success('Admin registered');
+      navigate('/admin/login');
+
     } catch (error) {
       console.error("Registration failed:", error);
       toast.error("Registration failed");
