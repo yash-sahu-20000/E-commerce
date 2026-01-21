@@ -15,6 +15,10 @@ import Categories from "../pages/Category/categories";
 import AddCategories from "../pages/Category/addCategory";
 import DeleteCategory from "../pages/Category/deleteCategory";
 import Orders from "../pages/order/orders";
+import HeroSlides from "../pages/HeroSlide/heroSlides";
+import AddHeroSlides from "../pages/HeroSlide/addHeroSlide";
+import UpdateHeroSlides from "../pages/HeroSlide/updateHeroSlide";
+import DeleteHeroSlides from "../pages/HeroSlide/deleteHeroSlide";
 
 
 
@@ -35,6 +39,10 @@ export const adminRoutes = {
     { path: "homeslides/add", element: <AddHomeSlides /> },
     { path: "homeslides/update/:id", element: <UpdateHomeSlides /> },
     { path: "homeslides/delete/:id", element: <DeleteHomeSlides /> },
+    { path: "heroslides", element: <HeroSlides /> },
+    { path: "heroslides/add", element: <AddHeroSlides /> },
+    { path: "heroslides/update/:id", element: <UpdateHeroSlides /> },
+    { path: "heroslides/delete/:id", element: <DeleteHeroSlides /> },
     { path: "users", element: <Users /> },
     { path: "users/delete/:id", element: <DeleteUser /> },
     { path: "categories", element: <Categories /> },

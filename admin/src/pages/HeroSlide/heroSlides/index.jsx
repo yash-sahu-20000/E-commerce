@@ -9,7 +9,7 @@ const TOTAL_SLIDES = 8;
 const ITEMS_PER_PAGE = 5;
 
 
-export default function HomeSlides() {
+export default function HeroSlides() {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -17,7 +17,7 @@ export default function HomeSlides() {
   const slides = Array.from({ length: TOTAL_SLIDES }, (_, i) => ({
     id: i + 1,
     title: `Slide ${i + 1}`,
-    type:'home',
+    type: 'hero',
     status: i % 2 === 0 ? "active" : "inactive",
     order: i + 1,
     image:
@@ -37,7 +37,7 @@ export default function HomeSlides() {
 
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-6">
-          <h1 className="text-xl font-semibold">Home Slides</h1>
+          <h1 className="text-xl font-semibold">Hero Slides</h1>
 
           <div className="relative">
             <FaSearch className="absolute top-2.5 left-3 text-gray-400" size={16} />
@@ -54,7 +54,7 @@ export default function HomeSlides() {
 
         <Button
           className="!bg-red-500 !text-white hover:!bg-red-600 normal-case"
-          onClick={() => navigate("/admin/homeslides/create")}
+          onClick={() => navigate("/admin/heroslides/create")}
         >
           Add Slide
         </Button>

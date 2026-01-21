@@ -42,6 +42,15 @@ useEffect(() => {
     },
     {
       type: "collapse",
+      name: "Hero Slides",
+      icon: <FaRegImage />,
+      children: [
+        { name: "All Slides", path: "/admin/heroslides" },
+        { name: "Add Slides", path: "/admin/heroslides/add" },
+      ],
+    },
+    {
+      type: "collapse",
       name: "Category",
       icon: <FaRegImage />,
       children: [

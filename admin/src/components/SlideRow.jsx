@@ -3,6 +3,11 @@ import { useNavigate } from "react-router-dom";
 export default function SlideRow({ slide }) {
   const navigate = useNavigate();
 
+  const basePath =
+    slide.type === "hero"
+      ? "/admin/heroslides"
+      : "/admin/homeslides";
+
   return (
     <div className="flex items-center px-4 py-3 rounded-xl
       bg-gray-50 dark:bg-gray-800
@@ -34,18 +39,14 @@ export default function SlideRow({ slide }) {
       <div className="flex-[2] flex justify-end gap-4">
         <button
           className="text-yellow-500 hover:underline"
-          onClick={() =>
-            navigate(`/admin/homeslides/update/${slide.id}`)
-          }
+          onClick={() => navigate(`${basePath}/update/${slide.id}`)}
         >
           Edit
         </button>
 
         <button
           className="text-red-500 hover:underline"
-          onClick={() =>
-            navigate(`/admin/homeslides/delete/${slide.id}`)
-          }
+          onClick={() => navigate(`${basePath}/delete/${slide.id}`)}
         >
           Delete
         </button>

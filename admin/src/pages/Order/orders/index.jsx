@@ -74,7 +74,6 @@ export default function Orders() {
   return (
     <div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 rounded-xl shadow p-6">
 
-      {/* HEADER */}
       <div className="flex items-center gap-6 mb-6">
         <h1 className="text-2xl font-semibold">Orders</h1>
 
@@ -91,7 +90,6 @@ export default function Orders() {
         </div>
       </div>
 
-      {/* TABLE HEADER */}
       <div className="flex px-4 py-2 text-sm text-gray-400 border-b dark:border-gray-700">
         <div className="flex-[1.5]">Order ID</div>
         <div className="flex-[2]">Customer</div>
@@ -101,7 +99,6 @@ export default function Orders() {
         <div className="flex-[2] text-right">Actions</div>
       </div>
 
-      {/* ROWS */}
       <div className="space-y-3 mt-3">
         {currentOrders.map((order) => (
           <div
@@ -148,7 +145,6 @@ export default function Orders() {
         ))}
       </div>
 
-      {/* PAGINATION */}
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}

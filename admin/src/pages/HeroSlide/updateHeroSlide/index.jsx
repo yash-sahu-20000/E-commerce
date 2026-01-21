@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 
-export default function UpdateHomeSlide() {
+export default function UpdateHeroSlide() {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -52,12 +52,12 @@ export default function UpdateHomeSlide() {
     e.preventDefault();
 
     console.log("Updated Slide:", { id, ...formData });
-    navigate("/admin/homeslides");
+    navigate("/admin/heroslides");
   };
 
   return (
     <div className=" bg-white dark:bg-gray-900 dark:text-white rounded-xl shadow p-6">
-      <h1 className="text-xl font-semibold mb-6">Update Home Slide</h1>
+      <h1 className="text-xl font-semibold mb-6">Update Hero Slide</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
 
@@ -117,7 +117,7 @@ export default function UpdateHomeSlide() {
         </div>
 
         <div className="flex justify-end gap-4 pt-4">
-          <Button variant="outlined" onClick={() => navigate("/admin/home-slides")}>
+          <Button variant="outlined" onClick={() => navigate("/admin/heroslides")}>
             Cancel
           </Button>
           <Button type="submit" className="!bg-red-500 !text-white normal-case">
