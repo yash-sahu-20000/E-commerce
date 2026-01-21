@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 
 export default function AdminRegister() {
-  const { register } = useAuth(); // 🔑 register method
+  const { register } = useAuth(); 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 

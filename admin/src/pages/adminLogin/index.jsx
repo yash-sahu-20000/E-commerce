@@ -20,21 +20,26 @@ export default function AdminLogin() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  if (!formData.email || !formData.password) {
+    toast.error("Please fill all fields");
+    return;
+  }
+  
+  setLoading(true);
+  try {
+    await login(formData);
+    toast.success("Login successful");
+    navigate("/admin");    
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Login failed");
+  } finally {
+    setLoading(false);      
+  }
+};
 
-    try {
-      await login(formData); 
-
-      navigate("/admin");    
-    } catch (error) {
-      console.error("Login failed:", error);
-      toast.error("Invalid admin credentials");
-    } finally {
-      setLoading(false);      
-    }
-  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
@@ -58,7 +63,6 @@ export default function AdminLogin() {
             <input
               type="email"
               name="email"
-              required
               value={formData.email}
               onChange={handleChange}
               placeholder="admin@urbancart.com"
@@ -76,7 +80,6 @@ export default function AdminLogin() {
             <input
               type="password"
               name="password"
-              required
               value={formData.password}
               onChange={handleChange}
               placeholder="••••••••"

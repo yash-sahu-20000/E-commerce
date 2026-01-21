@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import api from "../api/axios";
 
 const AuthContext = createContext();
 
@@ -8,16 +9,17 @@ export function AuthProvider({ children }) {
   );
   const [loading, setLoading] = useState(false)
 
-    useEffect(() => {
-    const storedAdmin = localStorage.getItem("admin");
-    if (storedAdmin) {
-        setAdmin(JSON.parse(storedAdmin));
-    }
-    setLoading(false);
-    }, []);
+  useEffect(() => {
+  const storedAdmin = localStorage.getItem("admin");
+  if (storedAdmin) {
+      setAdmin(JSON.parse(storedAdmin));
+  }
+  setLoading(false);
+  }, []);
 
-  const login = (data) => {
-    localStorage.setItem("admin", JSON.stringify(data));
+  const login = async (data) => {
+    const res = await api.post('/auth/login', data)
+    localStorage.setItem("admin", JSON.stringify(res.data));
     setAdmin(data);
   };
 
@@ -28,7 +30,7 @@ export function AuthProvider({ children }) {
 
   const register = async (formData) => {
   try {
-    const res = await api.post('/auth/register'); 
+    const res = await api.post('/auth/register', formData); 
     login(res.data); 
     return res.data;
   } catch (err) {
@@ -47,6 +49,7 @@ export function AuthProvider({ children }) {
         login,
         logout,
         loading,
+        register
          }}>
       {children}
     </AuthContext.Provider>

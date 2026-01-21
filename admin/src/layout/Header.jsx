@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
 import { useAuth } from "../context/authContext";
+import toast from "react-hot-toast";
 
 export default function Header() {
   const [darkMode, setDarkMode] = useState(false);
@@ -26,6 +27,7 @@ export default function Header() {
 
   const handleLogout = () => {
     logout();
+    toast.success("Logout Successful")
     navigate("/admin/login");
   };
   return (
