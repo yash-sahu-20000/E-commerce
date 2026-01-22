@@ -18,9 +18,9 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (data) => {
-    const res = await api.post('/auth/login', data)
+    const res = await api.post('/auth/login', data);
     localStorage.setItem("admin", JSON.stringify(res.data));
-    setAdmin(data);
+    setAdmin(res.data.user || res.data);  
   };
 
   const logout = () => {
@@ -38,8 +38,6 @@ export function AuthProvider({ children }) {
     throw err;
   }
 };
-
-
 
   return (
     <AuthContext.Provider 
