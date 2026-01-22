@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../context/authContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast'
 
 export default function AdminLogin() {
@@ -102,6 +102,11 @@ const handleSubmit = async (e) => {
             {loading ? "Logging in..." : "LOGIN"}
           </button>
         </form>
+
+        <span className="text-center text-xs text-gray-500 dark:text-gray-400 mt-6">Don't have an account ? 
+        <Link className="hover:text-red-500 text-right" to={'/admin/register'}> 
+         {' '}Register
+        </Link></span>
 
         <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-6">
           © {new Date().getFullYear()} UrbanCart Admin

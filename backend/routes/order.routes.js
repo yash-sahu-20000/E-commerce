@@ -4,11 +4,11 @@ import {
   updateOrderStatus,
 } from "../controllers/order.controller.js";
 
-import { protect } from "../middleware/auth.middleware.js";
+import { protect, verifyAdmin } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
 router.get("/", protect, getOrders);
-router.put("/:id/status", protect, updateOrderStatus);
+router.put("/:id/status", protect, verifyAdmin, updateOrderStatus);
 
 export default router;

@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
+import { useAuth } from "../../../context/authContext";
 
 export default function AddCategory() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  
+  useEffect(() => {
+    if (!isAuthenticated) navigate("/admin/login");
+  }, [isAuthenticated]);
 
     const [category, setCategory] = useState({
     name: "",
@@ -14,11 +20,30 @@ export default function AddCategory() {
     setCategory({ ...category, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("New Category:", name);
-    navigate("/admin/categories");
-  };
+    const handleSubmit = async (e) => {  // Make async
+      e.preventDefault();
+      setLoading(true);
+      
+      try {
+        const formDataToSend = new FormData();
+        formDataToSend.append('name', category.name);
+        
+        category.images.forEach((img, index) => {
+          formDataToSend.append('images', img.file);
+        });
+        
+        const res = await api.post('/admin/categories', formDataToSend, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        
+        toast.success('Category created!');
+        navigate("/admin/categories");
+      } catch (error) {
+        toast.error(error.response?.data?.message || 'Failed to create category');
+      } finally {
+        setLoading(false);
+      }
+    };
 
     const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
