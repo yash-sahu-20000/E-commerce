@@ -1,6 +1,7 @@
 import Category from '../models/Category.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import cloudinary from '../config/cloudinary.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -8,11 +9,22 @@ const __dirname = path.dirname(__filename);
 export const createCategory = async (req, res) => {
   try {
     const { name } = req.body;
-    const images = req.files ? req.files.map(file => `/uploads/categories/${file.filename}`) : [];
-    
-    const category = new Category({ name, images });
-    await category.save();
-    
+    let images = [];
+    if (req.files && req.files.length > 0) {
+      for (const file of req.files) {
+        const result = await cloudinary.uploader.upload(
+          `data:${file.mimetype};base64,${file.buffer.toString("base64")}`,
+          { folder: "categories" }
+        );
+        images.push(result.secure_url);
+      }
+    }
+    const category = await Category.create({
+      name,
+      images,
+      isActive: true,
+    });
+
     res.json({ success: true, category });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

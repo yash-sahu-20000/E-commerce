@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
-import { createCategory, getCategories } from '../../controllers/category.controller.js';
-import { protect, verifyAdmin } from '../../middleware/auth.js';
+import { createCategory, getCategories } from '../controllers/category.controller.js';
+import { protect, verifyAdmin } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
 
@@ -15,7 +15,7 @@ const upload = multer({
   }
 });
 
-router.post('/', protect, verifyAdmin, upload.array('images', 1), createCategory);
+router.post('/add', protect, verifyAdmin, upload.array('images', 1), createCategory);
 router.get('/', protect, verifyAdmin, getCategories);
 
 export default router;

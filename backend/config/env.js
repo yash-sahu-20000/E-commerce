@@ -8,5 +8,9 @@ export const env = {
   jwtSecret: process.env.JWT_SECRET,
   nodeEnv: process.env.NODE_ENV || "development",
   apiBaseUrl: process.env.BASE_URL,
-  frontEndUrl: process.env.FRONTEND_URL
+  frontEndUrl: process.env.FRONTEND_URL,
+  cloudinaryName: process.env.CLOUDINARY_CLOUD_NAME,
+  cloudinaryKey: process.env.CLOUDINARY_API_KEY,
+  cloudinarySecret: process.env.CLOUDINARY_API_SECRET,
+  cloudinaryURL : process.env.CLOUDINARY_URL
 };

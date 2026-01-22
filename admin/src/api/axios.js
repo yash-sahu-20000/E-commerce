@@ -6,4 +6,25 @@ const api = axios.create({
   withCredentials: true 
 });
 
+api.interceptors.request.use((config) => {
+  const adminData = localStorage.getItem("admin");
+  let token = null;
+  
+  if (adminData) {
+    try {
+      const parsed = JSON.parse(adminData);
+      token = parsed.token;
+    } catch (e) {
+      console.error('Invalid admin data in localStorage');
+    }
+  }
+  
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  
+  return config;
+});
+
+
 export default api;

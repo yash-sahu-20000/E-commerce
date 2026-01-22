@@ -3,10 +3,12 @@ import { FaSearch } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
 import { useAuth } from "../context/authContext";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const [darkMode, setDarkMode] = useState(false);
   const {logout} = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");

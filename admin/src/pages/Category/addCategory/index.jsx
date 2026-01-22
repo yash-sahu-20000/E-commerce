@@ -2,10 +2,13 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { useAuth } from "../../../context/authContext";
+import toast from "react-hot-toast";
+import api from "../../../api/axios";
 
 export default function AddCategory() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const [loading, setLoading] = useState(false);
   
   useEffect(() => {
     if (!isAuthenticated) navigate("/admin/login");
@@ -32,13 +35,14 @@ export default function AddCategory() {
           formDataToSend.append('images', img.file);
         });
         
-        const res = await api.post('/admin/categories', formDataToSend, {
+        const res = await api.post('/categories/add', formDataToSend, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
         
         toast.success('Category created!');
         navigate("/admin/categories");
       } catch (error) {
+        console.log(error)
         toast.error(error.response?.data?.message || 'Failed to create category');
       } finally {
         setLoading(false);
@@ -148,10 +152,17 @@ export default function AddCategory() {
 
           <Button
             type="submit"
-            className="!bg-red-500 !text-white hover:!bg-red-600 normal-case"
+            disabled={loading}
+            className={`w-full !text-white font-semibold py-3 rounded-md transition
+              ${
+                loading
+                  ? "!bg-gray-400 cursor-not-allowed"
+                  : "!bg-red-500 hover:bg-red-700"
+              }`}
           >
-            Save Category
+            {loading ? "Saving..." : "Save"}
           </Button>
+
         </div>
 
       </form>
