@@ -20,7 +20,7 @@ export default function AddCategory() {
     setCategory({ ...category, [e.target.name]: e.target.value });
   };
 
-    const handleSubmit = async (e) => {  // Make async
+    const handleSubmit = async (e) => { 
       e.preventDefault();
       setLoading(true);
       
