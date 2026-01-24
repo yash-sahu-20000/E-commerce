@@ -1,66 +1,61 @@
 import Slider from "@mui/material/Slider";
 import { useState } from "react";
-import { FaStar,FaChevronUp } from "react-icons/fa";
+import { FaStar, FaChevronUp } from "react-icons/fa";
+import useFetch from "../../hooks/useFetch";
 
-const categories = [
-  "Fashion",
-  "Electronics",
-  "Bags",
-  "Footwear",
-  "Groceries",
-  "Beauty",
-];
 
-export default function ProductFilterSidebar() {
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    const [priceRange, setPriceRange] = useState([0, 60000]);
+export default function ProductFilterSidebar({ filters, setFilters }) {
+  const { categoryid, priceRange, rating } = filters;
 
-    const [rating, setRating] = useState(null);
+  const { data, loading, error, refetch } = useFetch("/categories");
+  const categories = data?.categories || [];
+  console.log(categoryid)
 
   return (
     <aside className="w-full lg:w-72 bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm">
       
-        <Section title="Shop by Category">
+      <Section title="Shop by Category">
         {categories.map((cat) => (
-            <CheckboxRow
-            key={cat}
-            label={cat}
-            checked={selectedCategory === cat}
+          <CheckboxRow
+            key={cat._id}
+            label={cat.name}
+            checked={categoryid === cat._id} 
             onChange={() =>
-                setSelectedCategory(
-                selectedCategory === cat ? null : cat
-                )
+              setFilters({
+                ...filters,
+                categoryid: categoryid === cat._id ? null : cat._id, 
+              })
             }
-            />
+          />
         ))}
-        </Section>
+      </Section>
 
 
       <Section title="Filter By Price">
         <Slider
-            value={priceRange}
-            onChange={(e, newValue) => setPriceRange(newValue)}
-            min={0}
-            max={60000}
-            step={500}
-            valueLabelDisplay="auto"
-            sx={{
-                color: "red",
-            }}
+          value={priceRange}
+          onChange={(e, newValue) =>
+            setFilters({ ...filters, priceRange: newValue })
+          }
+          min={0}
+          max={60000}
+          step={500}
+          valueLabelDisplay="auto"
+          sx={{ color: "red" }}
         />
-
         <div className="flex justify-between text-sm mt-2 text-gray-700 dark:text-gray-300">
-        <span>From: Rs. {priceRange[0]}</span>
-        <span>To: Rs. {priceRange[1]}</span>
+          <span>From: Rs. {priceRange[0]}</span>
+          <span>To: Rs. {priceRange[1]}</span>
         </div>
-
       </Section>
 
       <Section title="Filter By Rating">
         {[5, 4, 3, 2, 1].map((r) => (
           <div
             key={r}
-            onClick={() => setRating(r)}
+            onClick={() =>
+              setFilters({ ...filters, rating: rating === r ? null : r })
+            }
             className="flex items-center gap-3 cursor-pointer mb-2"
           >
             <input type="checkbox" checked={rating === r} readOnly />
@@ -71,6 +66,8 @@ export default function ProductFilterSidebar() {
     </aside>
   );
 }
+
+
 
 function Section({ title, children }) {
   const [open, setOpen] = useState(true);

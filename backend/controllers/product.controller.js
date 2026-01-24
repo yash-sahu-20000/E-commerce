@@ -5,15 +5,30 @@ export const getProducts = async (req, res) => {
   try {
     const {
       category,
+      minPrice,
+      maxPrice,
+      rating,
       isPopular,
       isFeatured,
-      search
+      search,
+      page = 1,
+      limit = 8
     } = req.query;
 
     const filter = {};
 
     if (category) {
       filter.category = category;
+    }
+
+    if (minPrice || maxPrice) {
+      filter.price = {};
+      if (minPrice) filter.price.$gte = Number(minPrice);
+      if (maxPrice) filter.price.$lte = Number(maxPrice);
+    }
+
+    if (rating) {
+      filter.rating = { $gte: Number(rating) };
     }
 
     if (isPopular !== undefined) {
@@ -28,20 +43,29 @@ export const getProducts = async (req, res) => {
       filter.title = { $regex: search, $options: "i" };
     }
 
+    const skip = (page - 1) * limit;
+
     const products = await Product.find(filter)
       .populate("category", "name")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(Number(limit));
 
     const total = await Product.countDocuments(filter);
+    const totalPages = Math.ceil(total / limit);
 
     res.status(200).json({
       products,
-      total
+      total,
+      totalPages,
+      page: Number(page),
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
+
 
 export const getProduct = async (req, res) => {
   try {

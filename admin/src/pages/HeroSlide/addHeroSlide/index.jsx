@@ -5,8 +5,6 @@ import { useAuth } from "../../../context/authContext";
 import toast from "react-hot-toast";
 import api from "../../../api/axios";
 
-const SLIDE_TYPE = "hero";
-
 export default function AddHeroSlide() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
@@ -23,8 +21,8 @@ export default function AddHeroSlide() {
     order: "",
     status: "active",
     images: [],
-    type: SLIDE_TYPE,
-    price: 0,
+    type: "hero",
+    price: "",
     link: ""
   });
 
@@ -59,6 +57,11 @@ export default function AddHeroSlide() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!slide.title || !slide.order || !slide.price || !slide.link) {
+      toast.error("All fields are required");
+      return;
+    }
+
     if (slide.images.length === 0) {
       toast.error("Please upload an image");
       return;
@@ -71,17 +74,19 @@ export default function AddHeroSlide() {
       formData.append("title", slide.title);
       formData.append("order", slide.order);
       formData.append("status", slide.status);
-      formData.append("type", SLIDE_TYPE);
+      formData.append("type", slide.type);
       formData.append("price", slide.price);
       formData.append("link", slide.link);
-      slide.images.forEach((img, index) => {
-        formData.append("images", img.file)
+
+      slide.images.forEach((img) => {
+        formData.append("images", img.file);
       });
 
-      const res = await api.post('/slides/add', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+      await api.post("/slides/add", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
-      toast.success("Hero Sldie created!");
+
+      toast.success("Slide created successfully!");
       navigate("/admin/heroslides");
     } catch (error) {
       console.error(error);
@@ -93,39 +98,56 @@ export default function AddHeroSlide() {
 
   return (
     <div className="mx-auto bg-white dark:bg-gray-900 dark:text-white rounded-xl shadow p-6">
-      <h1 className="text-xl font-semibold mb-6">Add Hero Slide</h1>
+      <h1 className="text-xl font-semibold mb-6">Add Slide</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+
         <div>
           <label className="block text-sm mb-1">Slide Title</label>
           <input
             type="text"
             name="title"
-            required
             value={slide.title}
             onChange={handleChange}
+            required
             className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border"
           />
         </div>
+
+        <div>
+          <label className="block text-sm mb-2">Slide Type</label>
+          <select
+            name="type"
+            value={slide.type}
+            onChange={handleChange}
+            className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border"
+          >
+            <option value="hero">Hero Banner</option>
+            <option value="heroSide">Hero Side Banner</option>
+          </select>
+        </div>
+
         <div>
           <label className="block text-sm mb-1">Price</label>
           <input
-            type="text"
+            type="number"
             name="price"
-            required
             value={slide.price}
             onChange={handleChange}
+            required
             className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border"
           />
         </div>
+
         <div>
           <label className="block text-sm mb-1">Link</label>
           <input
             type="text"
             name="link"
-            required
             value={slide.link}
             onChange={handleChange}
+            required
+            placeholder="/products/123 or /category/men"
             className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border"
           />
         </div>
@@ -147,11 +169,12 @@ export default function AddHeroSlide() {
             <div className="mt-4 relative w-24 h-24">
               <img
                 src={slide.images[0].preview}
+                alt="preview"
                 className="w-full h-full object-cover rounded"
               />
               <button
                 type="button"
-                onClick={() => removeImage(0)} // ✅ pass index
+                onClick={() => removeImage(0)}
                 className="absolute top-1 right-1 bg-black/60 text-white text-xs w-5 h-5 rounded-full"
               >
                 ✕
@@ -165,9 +188,9 @@ export default function AddHeroSlide() {
           <input
             type="number"
             name="order"
-            required
             value={slide.order}
             onChange={handleChange}
+            required
             className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border"
           />
         </div>

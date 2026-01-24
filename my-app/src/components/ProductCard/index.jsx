@@ -1,7 +1,7 @@
 import { FaHeart, FaShareAlt, FaExpandAlt, FaStar } from "react-icons/fa";
 
-export default function ProductCard(product) {
-    const { id, image, brand, title, rating, oldPrice, price, discount } = product;
+export default function ProductCard({product}) {
+    const { _id, images, title, rating, price, category } = product;
 
   return (
     <div className="w-[280px] bg-white dark:bg-gray-800 rounded-xl 
@@ -15,8 +15,8 @@ export default function ProductCard(product) {
 
       <div className="relative group">
         <img
-          src={image}
-          alt="product"
+          src={images?.[0] || "/placeholder.png"}
+          alt={title}
           className="w-full h-[250px] object-cover group-hover:scale-105
                      transition-transform duration-300"
         />
@@ -31,7 +31,7 @@ export default function ProductCard(product) {
 
       <div className="p-4">
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          {brand}
+          brand
         </p>
 
         <h3 className="font-semibold truncate">
@@ -46,7 +46,7 @@ export default function ProductCard(product) {
 
         <div className="flex items-center justify-between my-3">
           <span className="text-gray-400 line-through">
-            {oldPrice}
+            {price}
           </span>
           <span className="text-red-500 font-bold text-lg">
             {price}

@@ -5,8 +5,24 @@ import "swiper/css/pagination";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import useFetch from "../../hooks/useFetch";
 
 export default function HeroBanner() {
+  const { data, loading, error } = useFetch("/slides?status=active");
+
+  if (loading) return null;
+  if (error) return null;
+
+  const slides = data?.slides || [];
+
+  const heroSlides = slides
+    .filter(slide => slide.type === "hero")
+    .sort((a, b) => a.order - b.order);
+
+  const sideSlides = slides
+    .filter(slide => slide.type === "heroSide")
+    .sort((a, b) => a.order - b.order);
+
   return (
     <section className="mx-auto py-6 px-4">
       <div className="flex flex-col lg:flex-row gap-6">
@@ -23,21 +39,16 @@ export default function HeroBanner() {
             loop
             className="h-full"
           >
-            <SwiperSlide>
-              <HeroSlide
-                image="https://images.unsplash.com/photo-1520975916090-3105956dac38"
-                title="Buy New Trend Women Black Cotton Blend Top"
-                price="₹1,550.00"
-              />
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <HeroSlide
-                image="https://images.unsplash.com/photo-1517841905240-472988babdf9"
-                title="Latest Fashion Wear for Women"
-                price="₹1,299.00"
-              />
-            </SwiperSlide>
+            {heroSlides.map(slide => (
+              <SwiperSlide key={slide._id}>
+                <HeroSlide
+                  image={slide.images?.[0]}
+                  title={slide.title}
+                  price={slide.price}
+                  link={slide.link}
+                />
+              </SwiperSlide>
+            ))}
           </Swiper>
 
           <NavBtn className="hero-prev left-4">
@@ -49,31 +60,15 @@ export default function HeroBanner() {
         </div>
 
         <div className="flex flex-col gap-6 flex-[1]">
-          <SideBanner
-            image="https://images.unsplash.com/photo-1517841905240-472988babdf9"
-            title="Buy women with low price"
-            price="₹999"
-          />
-          <SideBanner
-            image="https://images.unsplash.com/photo-1600180758890-6b94519a8ba6"
-            title="Buy Men's Footwear with low price"
-            price="₹1500"
-          />
-          <SideBanner
-            image="https://images.unsplash.com/photo-1600180758890-6b94519a8ba6"
-            title="Buy Men's Footwear with low price"
-            price="₹1500"
-          />
-          <SideBanner
-            image="https://images.unsplash.com/photo-1600180758890-6b94519a8ba6"
-            title="Buy Men's Footwear with low price"
-            price="₹1500"
-          />
-          <SideBanner
-            image="https://images.unsplash.com/photo-1600180758890-6b94519a8ba6"
-            title="Buy Men's Footwear with low price"
-            price="₹1500"
-          />
+          {sideSlides.map(slide => (
+            <SideBanner
+              key={slide._id}
+              image={slide.images?.[0]}
+              title={slide.title}
+              price={slide.price}
+              link={slide.link}
+            />
+          ))}
         </div>
 
       </div>
@@ -81,64 +76,69 @@ export default function HeroBanner() {
   );
 }
 
-function HeroSlide({ image, title, price }) {
+function HeroSlide({ image, title, price, link }) {
   return (
-    <div
-      className="flex items-center h-full rounded-xl overflow-hidden
-      bg-white dark:bg-gray-800 transition-colors
-      shadow-md hover:shadow-lg"
-    >
-      <img
-        src={image}
-        alt="banner"
-        className="w-1/2 h-full object-cover hidden md:block"
-      />
+    <div className="flex items-center h-full rounded-xl overflow-hidden
+      bg-white dark:bg-gray-800 shadow-md hover:shadow-lg">
+
+      {image && (
+        <img
+          src={image}
+          alt={title}
+          className="w-1/2 h-full object-cover hidden md:block"
+        />
+      )}
 
       <div className="p-6 md:p-10 max-w-xl">
         <p className="text-gray-600 dark:text-gray-400 mb-2">
           Big saving days sale
         </p>
 
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white leading-snug">
+        <h1 className="text-3xl md:text-4xl font-bold">
           {title}
         </h1>
 
-        <p className="mt-4 text-lg text-gray-700 dark:text-gray-300">
+        <p className="mt-4 text-lg">
           Starting At Only{" "}
           <span className="text-red-500 font-bold text-2xl">
-            {price}
+            ₹{price}
           </span>
         </p>
 
-        <button className="mt-6 bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-semibold transition">
+        <a
+          href={link}
+          className="inline-block mt-6 bg-red-500 hover:bg-red-600
+          text-white px-6 py-3 rounded-lg font-semibold transition"
+        >
           SHOP NOW
-        </button>
+        </a>
       </div>
     </div>
   );
 }
 
-function SideBanner({ image, title, price }) {
+function SideBanner({ image, title, price, link }) {
   return (
-    <div
-      className="flex items-center gap-4 p-4 rounded-xl
-      bg-white dark:bg-gray-800 transition-colors
-      shadow-md hover:shadow-lg"
-    >
-      <img
-        src={image}
-        alt="side-banner"
-        className="w-24 h-24 object-cover rounded-lg"
-      />
+    <div className="flex items-center gap-4 p-4 rounded-xl
+      bg-white dark:bg-gray-800 shadow-md hover:shadow-lg">
+
+      {image && (
+        <img
+          src={image}
+          alt={title}
+          className="w-24 h-24 object-cover rounded-lg"
+        />
+      )}
 
       <div>
-        <p className="font-semibold text-gray-800 dark:text-white">
-          {title}
-        </p>
-        <p className="text-red-500 font-bold">{price}</p>
-        <button className="mt-1 text-sm font-semibold underline text-gray-700 dark:text-gray-300">
+        <p className="font-semibold">{title}</p>
+        <p className="text-red-500 font-bold">₹{price}</p>
+        <a
+          href={link}
+          className="mt-1 inline-block text-sm font-semibold underline"
+        >
           SHOP NOW
-        </button>
+        </a>
       </div>
     </div>
   );
@@ -155,3 +155,4 @@ function NavBtn({ children, className }) {
     </button>
   );
 }
+

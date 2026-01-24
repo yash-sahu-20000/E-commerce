@@ -17,13 +17,17 @@ export const getSlide = async (req, res) => {
     });
   }
 };
-
 export const getSlides = async (req, res) => {
   try {
     const { type } = req.query;
 
     const filter = {};
-    if (type) filter.type = type;
+
+    if (type) {
+      filter.type = Array.isArray(type)
+        ? { $in: type }
+        : type;
+    }
 
     const slides = await Slide.find(filter).sort({ order: 1 });
 

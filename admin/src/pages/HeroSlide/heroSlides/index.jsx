@@ -7,14 +7,13 @@ import { useEffect, useState } from "react";
 import useFetch from "../../../hooks/useFetch";
 
 const ITEMS_PER_PAGE = 5;
-const SLIDE_TYPE = "hero";
 
 export default function HeroSlides() {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const { data, loading, error, refetch } = useFetch(
-    `/slides?type=${SLIDE_TYPE}`
+    `/slides?type=hero&type=heroSide`
   );
   const slides = data?.slides || [];
 
@@ -84,10 +83,11 @@ export default function HeroSlides() {
       </div>
 
       <div className="flex px-4 py-2 text-sm text-gray-500 border-b dark:border-gray-700">
-        <div className="flex-[5]">Slide</div>
-        <div className="flex-[2]">Order</div>
+        <div className="flex-[4]">Slide</div>
+        <div className="flex-[2]">Type</div>
+        <div className="flex-[1]">Order</div>
         <div className="flex-[2]">Status</div>
-        <div className="flex-[2] text-right">Actions</div>
+        <div className="flex-[3] text-right">Actions</div>
       </div>
 
       <div className="space-y-3 mt-3">

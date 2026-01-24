@@ -1,28 +1,29 @@
 import { FaStar, FaShoppingCart } from "react-icons/fa";
 
 export default function ProductListRowCard({ product }) {
+  const imageUrl =
+    product.images?.[0] || "https://via.placeholder.com/150";
+
   return (
     <div className="flex gap-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-5">
-      
       <div className="relative w-64 flex-shrink-0">
         <img
-          src={product.image}
+          src={imageUrl}
           alt={product.title}
           className="w-full h-full object-cover rounded-md hover:scale-105 transition-transform duration-300"
         />
 
-        {product.discount && (
+        {true && (
           <span className="absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-            {product.discount}%
+            5%
           </span>
         )}
       </div>
 
       <div className="flex flex-col justify-between flex-1">
-        
         <div>
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-            {product.brand}
+            {product.brand || "Brand"}
           </p>
 
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
@@ -30,26 +31,24 @@ export default function ProductListRowCard({ product }) {
           </h3>
 
           <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4 line-clamp-3">
-            {product.description}
+            {product.description || "No description available"}
           </p>
 
           <div className="flex items-center gap-1 mb-3">
             {[...Array(5)].map((_, i) => (
               <FaStar
                 key={i}
-                className={
-                  i < product.rating
-                    ? "text-yellow-400"
-                    : "text-gray-300"
-                }
+                className={i < product.rating ? "text-yellow-400" : "text-gray-300"}
               />
             ))}
           </div>
 
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-gray-400 line-through">
-              ₹{product.oldPrice}
-            </span>
+            {product.oldPrice && (
+              <span className="text-gray-400 line-through">
+                ₹{product.oldPrice}
+              </span>
+            )}
             <span className="text-red-500 text-xl font-semibold">
               ₹{product.price}
             </span>

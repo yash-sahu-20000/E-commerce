@@ -11,7 +11,7 @@ const slideSchema = new mongoose.Schema(
     link: String,
     order: Number,
     status: { type: String, enum: ["active", "inactive"] },
-    type: { type: String, enum: ["hero", "home"] },
+    type: { type: String, enum: ["hero", "home","heroSide"] },
   },
   { timestamps: true }
 );

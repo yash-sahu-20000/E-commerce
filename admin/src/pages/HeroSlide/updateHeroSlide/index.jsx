@@ -13,30 +13,31 @@ export default function UpdateHeroSlide() {
     title: "",
     order: "",
     status: "active",
-    image: null,
-    preview: null,
-    price: 0,
+    type: "hero",
+    image: null,      
+    preview: null,    
+    price: "",
     link: ""
   });
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchSlide = async () => {
       try {
-        console.log(`/slides/${id}`)
         const res = await api.get(`/slides/${id}`);
         const s = res.data.slide;
- 
+
         setSlide({
-          title: s.title,
-          order: s.order,
-          status: s.status,
+          title: s.title || "",
+          order: s.order || "",
+          status: s.status || "active",
+          type: s.type || "hero",
           image: null,
-          preview: s.images?.[0] || null,
-          price: s.price,
-          link: s.link
+          preview: s.images?.[0] || null, 
+          price: s.price || "",
+          link: s.link || ""
         });
       } catch (error) {
-        console.log(error)
+        console.error(error);
         toast.error("Failed to fetch slide");
       }
     };
@@ -44,25 +45,30 @@ export default function UpdateHeroSlide() {
     fetchSlide();
   }, [id]);
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setSlide({ ...slide, [name]: value });
+    setSlide((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    setSlide({
-      ...slide,
+    setSlide((prev) => ({
+      ...prev,
       image: file,
       preview: URL.createObjectURL(file),
-    });
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!slide.title || !slide.order || !slide.price || !slide.link) {
+      toast.error("All fields are required");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -70,10 +76,13 @@ export default function UpdateHeroSlide() {
       formData.append("title", slide.title);
       formData.append("order", slide.order);
       formData.append("status", slide.status);
+      formData.append("type", slide.type);
       formData.append("price", slide.price);
       formData.append("link", slide.link);
 
-      if (slide.image) formData.append("images", slide.image);
+      if (slide.image) {
+        formData.append("images", slide.image);
+      }
 
       await api.put(`/slides/${id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -90,8 +99,8 @@ export default function UpdateHeroSlide() {
   };
 
   return (
-    <div className=" bg-white dark:bg-gray-900 dark:text-white rounded-xl shadow p-6">
-      <h1 className="text-xl font-semibold mb-6">Update Hero Slide</h1>
+    <div className="bg-white dark:bg-gray-900 dark:text-white rounded-xl shadow p-6">
+      <h1 className="text-xl font-semibold mb-6">Update Slide</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
 
@@ -100,34 +109,51 @@ export default function UpdateHeroSlide() {
           <input
             type="text"
             name="title"
-            required
             value={slide.title}
             onChange={handleChange}
+            required
             className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border"
           />
         </div>
+
+        <div>
+          <label className="block text-sm mb-2">Slide Type</label>
+          <select
+            name="type"
+            value={slide.type}
+            onChange={handleChange}
+            className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border"
+          >
+            <option value="hero">Hero Banner</option>
+            <option value="heroSide">Hero Side Banner</option>
+          </select>
+        </div>
+
         <div>
           <label className="block text-sm mb-1">Price</label>
           <input
-            type="text"
+            type="number"
             name="price"
-            required
             value={slide.price}
             onChange={handleChange}
+            required
             className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border"
           />
         </div>
+
         <div>
           <label className="block text-sm mb-1">Link</label>
           <input
             type="text"
             name="link"
-            required
             value={slide.link}
             onChange={handleChange}
+            required
+            placeholder="/products/123 or /category/men"
             className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border"
           />
         </div>
+
         <div>
           <label className="block text-sm mb-1">Slide Image</label>
           <input type="file" accept="image/*" onChange={handleImageChange} />
@@ -146,9 +172,9 @@ export default function UpdateHeroSlide() {
           <input
             type="number"
             name="order"
-            required
             value={slide.order}
             onChange={handleChange}
+            required
             className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border"
           />
         </div>
@@ -178,6 +204,7 @@ export default function UpdateHeroSlide() {
           >
             Cancel
           </Button>
+
           <Button
             type="submit"
             disabled={loading}
