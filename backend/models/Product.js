@@ -18,7 +18,8 @@ const productSchema = new mongoose.Schema(
     stock: { type: Number, default: 0 },
     description: String,
     images: [String],
-
+    isPopular: { type: Boolean, default: false },
+    isFeatured: { type: Boolean, default: false },
     status: {
       type: String,
       enum: ["active", "inactive"],

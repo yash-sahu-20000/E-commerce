@@ -3,15 +3,46 @@ import Product from "../models/Product.js";
 
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find()
+    const {
+      category,
+      isPopular,
+      isFeatured,
+      search
+    } = req.query;
+
+    const filter = {};
+
+    if (category) {
+      filter.category = category;
+    }
+
+    if (isPopular !== undefined) {
+      filter.isPopular = isPopular === "true";
+    }
+
+    if (isFeatured !== undefined) {
+      filter.isFeatured = isFeatured === "true";
+    }
+
+    if (search) {
+      filter.title = { $regex: search, $options: "i" };
+    }
+
+    const products = await Product.find(filter)
       .populate("category", "name")
       .sort({ createdAt: -1 });
 
-    res.json({ products });
+    const total = await Product.countDocuments(filter);
+
+    res.status(200).json({
+      products,
+      total
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 export const getProduct = async (req, res) => {
   try {
     const product = await Product.findById({_id: req.params.id})

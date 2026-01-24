@@ -14,12 +14,12 @@ export default function Categories() {
 
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const categories = data?.categories || [];
 
-  const products = data?.products || [];
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [search, products.length]);
+  }, [search, categories.length]);
 
   if (loading)
     return (
@@ -34,7 +34,6 @@ export default function Categories() {
       </p>
     );
 
-  const categories = data?.categories || [];
   const filteredCategories = categories.filter((category) =>
     category.name.toLowerCase().includes(search.toLowerCase())
   );

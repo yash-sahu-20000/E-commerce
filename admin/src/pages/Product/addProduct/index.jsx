@@ -19,16 +19,23 @@ export default function AddProduct() {
     status: "active",
     description: "",
     images: [],
+    isPopular: false,
+    isFeatured: false,
   });
 
-  const { data, error, refetch } = useFetch("/categories");
+  const { data, error } = useFetch("/categories");
 
   useEffect(() => {
     if (!isAuthenticated) navigate("/admin/login");
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate]);
 
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
+  };
+
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setProduct({ ...product, [name]: checked });
   };
 
   const handleImageUpload = (e) => {
@@ -69,6 +76,8 @@ export default function AddProduct() {
       formData.append("stock", product.stock);
       formData.append("status", product.status);
       formData.append("description", product.description);
+      formData.append("isPopular", product.isPopular);
+      formData.append("isFeatured", product.isFeatured);
 
       product.images.forEach((img) => {
         formData.append("images", img.file);
@@ -93,6 +102,7 @@ export default function AddProduct() {
       <h1 className="text-xl font-semibold mb-6">Add Product</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+
         <div>
           <label className="block text-sm mb-1">Product Name</label>
           <input
@@ -121,7 +131,6 @@ export default function AddProduct() {
             focus:outline-none focus:ring-2 focus:ring-red-500"
           >
             <option value="">Select category</option>
-
             {data?.categories?.map((cat) => (
               <option key={cat._id} value={cat._id}>
                 {cat.name}
@@ -136,8 +145,8 @@ export default function AddProduct() {
           )}
         </div>
 
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
           <div>
             <label className="block text-sm mb-1">Price (₹)</label>
             <input
@@ -152,6 +161,8 @@ export default function AddProduct() {
               focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
+
+
 
           <div>
             <label className="block text-sm mb-1">Stock</label>
@@ -168,7 +179,31 @@ export default function AddProduct() {
             />
           </div>
         </div>
+          <div className="flex items-center gap-2 mt-6">
+            <input
+              type="checkbox"
+              name="isPopular"
+              checked={product.isPopular}
+              onChange={handleCheckboxChange}
+              className="accent-red-500"
+            />
+            <label className="text-sm text-gray-600 dark:text-gray-400">
+              Popular Product
+            </label>
+          </div>
 
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              name="isFeatured"
+              checked={product.isFeatured}
+              onChange={handleCheckboxChange}
+              className="accent-red-500"
+            />
+            <label className="text-sm text-gray-600 dark:text-gray-400">
+              Featured Product
+            </label>
+          </div>
         <div>
           <label className="block text-sm mb-1">Status</label>
           <select
@@ -218,6 +253,7 @@ export default function AddProduct() {
                 >
                   <img
                     src={img.preview}
+                    alt="preview"
                     className="w-full h-full object-cover"
                   />
                   <button

@@ -26,6 +26,8 @@ export default function UpdateProduct() {
     status: "active",
     description: "",
     images: [],
+    isPopular: false,
+    isFeatured: false,
   });
 
 
@@ -41,7 +43,9 @@ export default function UpdateProduct() {
       stock: p.stock || "",
       status: p.status || "active",
       description: p.description || "",
-      images: p.images || []
+      images: p.images || [],
+      isPopular: !!p.isPopular,
+      isFeatured: !!p.isFeatured,
     });
   }, [productData]);
 
@@ -63,15 +67,9 @@ export default function UpdateProduct() {
     });
   };
 
-
-  const removeExistingImage = (index) => {
-    setProduct({
-      ...product,
-      images: {
-        ...product.images,
-        existing: product.images.existing.filter((_, i) => i !== index),
-      },
-    });
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setProduct({ ...product, [name]: checked });
   };
 
   const removeImage = (index) => {
@@ -94,6 +92,8 @@ export default function UpdateProduct() {
       formData.append("stock", product.stock);
       formData.append("status", product.status);
       formData.append("description", product.description);
+      formData.append("isPopular", product.isPopular);
+      formData.append("isFeatured", product.isFeatured);
 
       const existingImages = product.images.filter(
         (img) => typeof img === "string"
@@ -145,13 +145,6 @@ return (
         </p>
       </div>
 
-      <Button
-        onClick={handleSubmit}
-        disabled={loading}
-        className="!bg-red-500 !text-white hover:!bg-red-600 normal-case !px-5"
-      >
-        {loading ? "Updating..." : "Update Product"}
-      </Button>
     </div>
 
     <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -223,7 +216,29 @@ return (
           focus:outline-none focus:ring-2 focus:ring-red-500"
         />
       </div>
+      <div className="flex items-center gap-6 mb-4">
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            name="isPopular"
+            checked={product.isPopular}
+            onChange={handleCheckboxChange}
+            className="accent-red-500"
+          />
+          <label className="text-sm">Popular Product</label>
+        </div>
 
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            name="isFeatured"
+            checked={product.isFeatured}
+            onChange={handleCheckboxChange}
+            className="accent-red-500"
+          />
+          <label className="text-sm">Featured Product</label>
+        </div>
+      </div>
       <div>
         <label className="block text-sm mb-1 text-gray-600 dark:text-gray-400">
           Status
@@ -303,6 +318,24 @@ return (
           Click to upload images
         </span>
       </label>
+        <div className="flex justify-end gap-4 pt-4">
+          <Button
+            variant="outlined"
+            onClick={() => navigate("/admin/products")}
+          >
+            Cancel
+          </Button> 
+
+          <Button
+            onClick={handleSubmit}
+            disabled={loading}
+            className={`!text-white ${
+              loading ? "!bg-gray-400" : "!bg-red-500 hover:!bg-red-600"
+            }`}
+          >
+            {loading ? "Updating..." : "Update Product"}
+          </Button>
+        </div>
     </div>
   </div>
 );
