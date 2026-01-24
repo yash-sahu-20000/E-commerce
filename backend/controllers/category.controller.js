@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 
 export const createCategory = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, description } = req.body;
     let images = [];
     if (req.files && req.files.length > 0) {
       for (const file of req.files) {
@@ -21,6 +21,7 @@ export const createCategory = async (req, res) => {
     }
     const category = await Category.create({
       name,
+      description,
       images,
       isActive: true,
     });

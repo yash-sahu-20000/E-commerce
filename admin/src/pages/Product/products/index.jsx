@@ -1,39 +1,52 @@
 import { FaSearch } from "react-icons/fa";
-import { ProductRow } from "../../../components/productrow";
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ProductRow } from "../../../components/ProductRow";
 import Pagination from "../../../components/Pagination";
+import useFetch from "../../../hooks/useFetch";
+import { useEffect, useState } from "react";
 
-const TOTAL_PRODUCTS = 47;        
-const ITEMS_PER_PAGE = 5;
-
+const ITEMS_PER_PAGE = 10;
 
 export default function Products() {
-  
-  const products = Array.from({ length: TOTAL_PRODUCTS }, (_, i) => ({
-  id: i + 1,
-  title: `Product ${i + 1}`,
-  category: "Men",
-  price: 79.8,
-  stock: 79,
-  status: "active",
-  image:
-    "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
-}));
+  const navigate = useNavigate();
+  const { data, loading, error, refetch } = useFetch("/products");
 
+  const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.ceil(TOTAL_PRODUCTS / ITEMS_PER_PAGE);
+  const products = data?.products || [];
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, products.length]);
+
+  if (loading)
+    return (
+      <p className="text-center py-10 text-gray-400">
+        Loading Products...
+      </p>
+    );
+
+  if (error)
+    return (
+      <p className="text-center py-10 text-red-500">
+        {error}
+      </p>
+    );
+
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-
-
-  const currentProducts = products.slice(startIndex, endIndex);
+  const currentProducts = filteredProducts.slice(startIndex, endIndex);
 
   return (
-    <div className="bg-white text-gray-800 dark:text-gray-100 dark:bg-gray-900 rounded-xl shadow p-6">
-
+    <div className="bg-white dark:text-white dark:bg-gray-900 rounded-xl shadow p-6">
+      
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-6">
           <h1 className="text-xl font-semibold">Products</h1>
@@ -45,22 +58,26 @@ export default function Products() {
             />
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Search product..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               className="pl-10 pr-4 py-2 text-sm rounded-lg
               bg-gray-50 dark:bg-gray-800
-              text-gray-800 dark:text-gray-100
               border border-gray-300 dark:border-gray-700
               focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
         </div>
 
-        <Button className="!bg-red-500 !text-white hover:!bg-red-600 normal-case !py-2 !px-4">
+        <Button
+          className="!bg-red-500 !text-white hover:!bg-red-600 normal-case"
+          onClick={() => navigate("/admin/products/add")}
+        >
           Add Product
         </Button>
       </div>
 
-      <div className="flex px-4 py-2 text-sm text-gray-500 dark:text-gray-400 border-b dark:border-gray-700">
+      <div className="flex px-4 py-2 text-sm text-gray-500 border-b dark:border-gray-700">
         <div className="flex-[6]">Product</div>
         <div className="flex-[2]">Category</div>
         <div className="flex-[1]">Price</div>
@@ -70,16 +87,28 @@ export default function Products() {
       </div>
 
       <div className="space-y-3 mt-3">
-        {currentProducts.map((product) => (
-          <ProductRow product={product} key={product.id} />
-        ))}
+        {currentProducts.length > 0 ? (
+          currentProducts.map((product) => (
+            <ProductRow
+              key={product._id}
+              product={product}
+              refetch={refetch}
+            />
+          ))
+        ) : (
+          <p className="text-center text-gray-400 py-6">
+            No products found
+          </p>
+        )}
       </div>
 
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
-      />
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      )}
     </div>
   );
 }

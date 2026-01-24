@@ -19,21 +19,27 @@ export function UserRow({ user }) {
       <div className="flex-[2]">
         <span
           className={`px-2 py-1 text-xs rounded-full
-          ${user.status === "active"
+          ${user.isActive === true
             ? "bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-300"
             : "bg-gray-200 text-gray-600 dark:bg-gray-600/20 dark:text-gray-300"
           }`}
         >
-          {user.status}
+          {user.isActive ? "Active" : "Inactive"}
         </span>
       </div>
 
-      <div className="flex-[2] flex justify-end">
+      <div className="flex-[2] flex justify-end gap-3">
         <button
           className="text-red-500 hover:underline"
-          onClick={() => navigate(`/admin/users/delete/${user.id}`)}
+          onClick={() => navigate(`/admin/users/delete/${user._id}`)}
         >
           Delete
+        </button>
+        <button
+          className="text-yellow-500 hover:underline"
+          onClick={() => navigate(`/admin/users/view/${user._id}`)}
+        >
+          View
         </button>
       </div>
     </div>

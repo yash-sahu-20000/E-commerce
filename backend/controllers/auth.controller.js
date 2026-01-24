@@ -21,7 +21,6 @@ export const login = async (req, res) => {
 };
 
 export const register = async (req, res) => {
-  console.log(req);
   const { name, email, password } = req.body;
   const hashed = await bcrypt.hash(password, 12);
   const user = await User.findOne({ email });

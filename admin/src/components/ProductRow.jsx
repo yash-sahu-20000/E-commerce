@@ -11,7 +11,7 @@ export function ProductRow({ product }) {
 
       <div className="flex-[6] flex items-center gap-3">
         <img
-          src={product.image}
+          src={product.images?.[0] || "./page.png"}
           alt={product.title}
           className="w-10 h-10 rounded object-cover"
         />
@@ -21,7 +21,7 @@ export function ProductRow({ product }) {
       </div>
 
       <div className="flex-[2] text-gray-600 dark:text-gray-300">
-        {product.category}
+        {product.category?.name || "—"}
       </div>
 
       <div className="flex-[1] font-medium">
@@ -43,14 +43,14 @@ export function ProductRow({ product }) {
       <div className="flex-[2] flex justify-end gap-4">
         <button
           className="text-yellow-500 hover:underline"
-          onClick={() => navigate(`/admin/products/update/${product.id}`)}
+          onClick={() => navigate(`/admin/products/update/${product._id}`)}
         >
           Edit
         </button>
 
         <button
           className="text-red-500 hover:underline"
-          onClick={() => navigate(`/admin/products/delete/${product.id}`)}
+          onClick={() => navigate(`/admin/products/delete/${product._id}`)}
         >
           Delete
         </button>

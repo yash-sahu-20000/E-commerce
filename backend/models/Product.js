@@ -2,15 +2,23 @@ import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema(
   {
-    title: String,
+    title: { type: String, required: true },
     brand: String,
-    category: String,
-    price: Number,
+
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
+
+    price: { type: Number, required: true },
     oldPrice: Number,
     discount: Number,
-    rating: Number,
-    stock: Number,
-    image: String,
+    rating: { type: Number, default: 0 },
+    stock: { type: Number, default: 0 },
+    description: String,
+    images: [String],
+
     status: {
       type: String,
       enum: ["active", "inactive"],

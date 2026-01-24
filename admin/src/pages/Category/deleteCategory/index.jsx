@@ -1,13 +1,27 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
+import api from "../../../api/axios";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function DeleteCategory() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const handleDelete = () => {
-    console.log("Deleted category:", id);
-    navigate("/admin/categories");
+  const handleDelete = async () => {
+    try {
+      setLoading(true);
+      await api.delete(`/categories/${id}`);
+      toast.success("Category deleted successfully");
+      navigate("/admin/categories");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Failed to delete category"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -16,22 +30,25 @@ export default function DeleteCategory() {
         Delete Category
       </h1>
 
-      <p className="text-gray-600 dark:text-gray-300 mb-6">
-        Are you sure you want to delete this category?  
+      <p className="text-gray-600 mb-6">
+        Are you sure you want to delete this category?
         <br />
         <strong>This action cannot be undone.</strong>
       </p>
 
       <div className="flex justify-end gap-4">
-        <Button variant="outlined" onClick={() => navigate("/admin/categories")}>
+        <Button variant="outlined" onClick={() => navigate(-1)}>
           Cancel
         </Button>
 
         <Button
-          className="!bg-red-500 !text-white hover:!bg-red-600 normal-case"
           onClick={handleDelete}
+          disabled={loading}
+          className={`!text-white ${
+            loading ? "!bg-gray-400" : "!bg-red-500"
+          }`}
         >
-          Delete
+          {loading ? "Deleting..." : "Delete"}
         </Button>
       </div>
     </div>

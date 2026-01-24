@@ -2,6 +2,10 @@ import { useNavigate } from "react-router-dom";
 
 export default function SlideRow({ slide }) {
   const navigate = useNavigate();
+  const imageUrl =
+    slide.images && slide.images.length > 0
+      ? slide.images[0]
+      : "https://via.placeholder.com/50";
 
   const basePath =
     slide.type === "hero"
@@ -15,7 +19,7 @@ export default function SlideRow({ slide }) {
 
       <div className="flex-[5] flex items-center gap-3">
         <img
-          src={slide.image}
+          src={imageUrl}
           alt={slide.title}
           className="w-14 h-10 rounded object-cover"
         />
@@ -39,14 +43,14 @@ export default function SlideRow({ slide }) {
       <div className="flex-[2] flex justify-end gap-4">
         <button
           className="text-yellow-500 hover:underline"
-          onClick={() => navigate(`${basePath}/update/${slide.id}`)}
+          onClick={() => navigate(`${basePath}/update/${slide._id}`)}
         >
           Edit
         </button>
 
         <button
           className="text-red-500 hover:underline"
-          onClick={() => navigate(`${basePath}/delete/${slide.id}`)}
+          onClick={() => navigate(`${basePath}/delete/${slide._id}`)}
         >
           Delete
         </button>

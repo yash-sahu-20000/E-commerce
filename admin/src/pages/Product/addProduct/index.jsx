@@ -1,10 +1,16 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
 import api from "../../../api/axios";
+import { useAuth } from "../../../context/authContext";
+import useFetch from "../../../hooks/useFetch";
 
 export default function AddProduct() {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState({
     title: "",
     category: "",
@@ -14,6 +20,12 @@ export default function AddProduct() {
     description: "",
     images: [],
   });
+
+  const { data, error, refetch } = useFetch("/categories");
+
+  useEffect(() => {
+    if (!isAuthenticated) navigate("/admin/login");
+  }, [isAuthenticated]);
 
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
@@ -27,186 +39,166 @@ export default function AddProduct() {
       return;
     }
 
-    const imagePreviews = files.map((file) => ({
+    const previews = files.map((file) => ({
       file,
       preview: URL.createObjectURL(file),
     }));
 
     setProduct({
       ...product,
-      images: [...product.images, ...imagePreviews],
+      images: [...product.images, ...previews],
     });
   };
 
   const removeImage = (index) => {
-    const updatedImages = product.images.filter((_, i) => i !== index);
-    setProduct({ ...product, images: updatedImages });
+    setProduct({
+      ...product,
+      images: product.images.filter((_, i) => i !== index),
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("title", product.title);
-    formData.append("category", product.category);
-    formData.append("price", product.price);
-    formData.append("stock", product.stock);
-    formData.append("status", product.status);
-    formData.append("description", product.description);
-
-    product.images.forEach((img) => {
-      formData.append("images", img.file); 
-    });
+    setLoading(true);
 
     try {
-      const res = await api.post("/products", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      const formData = new FormData();
+      formData.append("title", product.title);
+      formData.append("category", product.category);
+      formData.append("price", product.price);
+      formData.append("stock", product.stock);
+      formData.append("status", product.status);
+      formData.append("description", product.description);
+
+      product.images.forEach((img) => {
+        formData.append("images", img.file);
       });
-      toast.success("Product added successfully!");
-      setProduct({
-        title: "",
-        category: "",
-        price: "",
-        stock: "",
-        status: "active",
-        description: "",
-        images: [],
+
+      await api.post("/products", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
+
+      toast.success("Product created!");
+      navigate("/admin/products");
     } catch (error) {
       console.error(error);
-      toast.error("Failed to add product");
+      toast.error(error.response?.data?.message || "Failed to create product");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-xl shadow p-6">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
-            Add Product
-          </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            Create a new product for your store
-          </p>
-        </div>
+    <div className="mx-auto bg-white dark:text-white dark:bg-gray-900 rounded-xl shadow p-6">
+      <h1 className="text-xl font-semibold mb-6">Add Product</h1>
 
-        <Button
-          onClick={handleSubmit}
-          className="!bg-red-500 !text-white hover:!bg-red-600 normal-case !px-5 !py-2"
-        >
-          Save Product
-        </Button>
-      </div>
-
-      <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-sm mb-1 text-gray-600 dark:text-gray-400">
-            Product Name
-          </label>
+          <label className="block text-sm mb-1">Product Name</label>
           <input
+            required
             name="title"
             value={product.title}
             onChange={handleChange}
-            placeholder="Product Name"
-            className="w-full px-4 py-2 rounded-lg border
+            placeholder="Enter product name"
+            className="w-full px-4 py-2 rounded-lg
             bg-gray-50 dark:bg-gray-800
-            text-gray-700 dark:text-gray-200
-            border-gray-300 dark:border-gray-700
-            focus:ring-2 focus:ring-red-500 outline-none"
+            border border-gray-300 dark:border-gray-700
+            focus:outline-none focus:ring-2 focus:ring-red-500"
           />
         </div>
 
         <div>
-          <label className="block text-sm mb-1 text-gray-600 dark:text-gray-400">
-            Category
-          </label>
+          <label className="block text-sm mb-1">Category</label>
           <select
+            required
             name="category"
             value={product.category}
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg border
+            className="w-full px-4 py-2 rounded-lg
             bg-gray-50 dark:bg-gray-800
-            text-gray-700 dark:text-gray-200
-            border-gray-300 dark:border-gray-700
-            focus:ring-2 focus:ring-red-500 outline-none"
+            border border-gray-300 dark:border-gray-700
+            focus:outline-none focus:ring-2 focus:ring-red-500"
           >
             <option value="">Select category</option>
-            <option>Shoes</option>
-            <option>Clothing</option>
-            <option>Electronics</option>
+
+            {data?.categories?.map((cat) => (
+              <option key={cat._id} value={cat._id}>
+                {cat.name}
+              </option>
+            ))}
           </select>
+
+          {error && (
+            <p className="text-sm text-red-500 mt-1">
+              Failed to load categories
+            </p>
+          )}
+        </div>
+
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm mb-1">Price (₹)</label>
+            <input
+              type="number"
+              required
+              name="price"
+              value={product.price}
+              onChange={handleChange}
+              className="w-full px-4 py-2 rounded-lg
+              bg-gray-50 dark:bg-gray-800
+              border border-gray-300 dark:border-gray-700
+              focus:outline-none focus:ring-2 focus:ring-red-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm mb-1">Stock</label>
+            <input
+              type="number"
+              required
+              name="stock"
+              value={product.stock}
+              onChange={handleChange}
+              className="w-full px-4 py-2 rounded-lg
+              bg-gray-50 dark:bg-gray-800
+              border border-gray-300 dark:border-gray-700
+              focus:outline-none focus:ring-2 focus:ring-red-500"
+            />
+          </div>
         </div>
 
         <div>
-          <label className="block text-sm mb-1 text-gray-600 dark:text-gray-400">
-            Price (₹)
-          </label>
-          <input
-            type="number"
-            name="price"
-            value={product.price}
-            onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg border
-            bg-gray-50 dark:bg-gray-800
-            text-gray-700 dark:text-gray-200
-            border-gray-300 dark:border-gray-700
-            focus:ring-2 focus:ring-red-500 outline-none"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm mb-1 text-gray-600 dark:text-gray-400">
-            Stock
-          </label>
-          <input
-            type="number"
-            name="stock"
-            value={product.stock}
-            onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg border
-            bg-gray-50 dark:bg-gray-800
-            text-gray-700 dark:text-gray-200
-            border-gray-300 dark:border-gray-700
-            focus:ring-2 focus:ring-red-500 outline-none"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm mb-1 text-gray-600 dark:text-gray-400">
-            Status
-          </label>
+          <label className="block text-sm mb-1">Status</label>
           <select
             name="status"
             value={product.status}
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg border
+            className="w-full px-4 py-2 rounded-lg
             bg-gray-50 dark:bg-gray-800
-            text-gray-700 dark:text-gray-200
-            border-gray-300 dark:border-gray-700
-            focus:ring-2 focus:ring-red-500 outline-none"
+            border border-gray-300 dark:border-gray-700
+            focus:outline-none focus:ring-2 focus:ring-red-500"
           >
             <option value="active">Active</option>
             <option value="draft">Draft</option>
           </select>
         </div>
 
-        <div className="md:col-span-2">
+        <div>
           <label className="block text-sm mb-2 text-gray-600 dark:text-gray-400">
             Product Images (max 4)
           </label>
 
           <label className="flex items-center justify-center h-32 border-2 border-dashed rounded-lg
-            cursor-pointer
-            bg-gray-50 dark:bg-gray-800
+            cursor-pointer bg-gray-50 dark:bg-gray-800
             border-gray-300 dark:border-gray-700
             hover:border-red-500 transition">
 
             <input
               type="file"
-              accept="image/*"
               multiple
+              accept="image/*"
               onChange={handleImageUpload}
               className="hidden"
             />
@@ -226,15 +218,13 @@ export default function AddProduct() {
                 >
                   <img
                     src={img.preview}
-                    alt="preview"
                     className="w-full h-full object-cover"
                   />
-
                   <button
                     type="button"
                     onClick={() => removeImage(index)}
                     className="absolute top-1 right-1 bg-black/60 text-white text-xs
-                    w-5 h-5 rounded-full flex items-center justify-center hover:bg-red-500"
+                    w-5 h-5 rounded-full hover:bg-red-500"
                   >
                     ✕
                   </button>
@@ -244,21 +234,37 @@ export default function AddProduct() {
           )}
         </div>
 
-        <div className="md:col-span-2">
-          <label className="block text-sm mb-1 text-gray-600 dark:text-gray-400">
-            Description
-          </label>
+        <div>
+          <label className="block text-sm mb-1">Description</label>
           <textarea
+            rows="4"
             name="description"
             value={product.description}
             onChange={handleChange}
-            rows="4"
-            className="w-full px-4 py-2 rounded-lg border
+            className="w-full px-4 py-2 rounded-lg
             bg-gray-50 dark:bg-gray-800
-            text-gray-700 dark:text-gray-200
-            border-gray-300 dark:border-gray-700
-            focus:ring-2 focus:ring-red-500 outline-none"
+            border border-gray-300 dark:border-gray-700
+            focus:outline-none focus:ring-2 focus:ring-red-500"
           />
+        </div>
+
+        <div className="flex justify-end gap-4 pt-4">
+          <Button
+            variant="outlined"
+            onClick={() => navigate("/admin/products")}
+          >
+            Cancel
+          </Button>
+
+          <Button
+            type="submit"
+            disabled={loading}
+            className={`!text-white ${
+              loading ? "!bg-gray-400" : "!bg-red-500 hover:!bg-red-600"
+            }`}
+          >
+            {loading ? "Saving..." : "Save Product"}
+          </Button>
         </div>
       </form>
     </div>

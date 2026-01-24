@@ -1,21 +1,14 @@
 import express from 'express';
-import multer from 'multer';
-import { createCategory, getCategories } from '../controllers/category.controller.js';
+import { createCategory, deleteCategory, getCategories } from '../controllers/category.controller.js';
 import { protect, verifyAdmin } from '../middleware/auth.middleware.js';
+import multerUpload from '../config/multer.js';
 
 const router = express.Router();
 
-const storage = multer.memoryStorage();
-const upload = multer({ 
-  storage,
-  limits: { fileSize: 5 * 1024 * 1024 },
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith('image/')) cb(null, true);
-    else cb(new Error('Only images'), false);
-  }
-});
 
-router.post('/add', protect, verifyAdmin, upload.array('images', 1), createCategory);
+router.post('/add', protect, verifyAdmin, multerUpload.array('images', 1), createCategory);
 router.get('/', protect, verifyAdmin, getCategories);
+router.delete('/:id', protect, verifyAdmin, deleteCategory);
+
 
 export default router;

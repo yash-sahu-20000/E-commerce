@@ -1,58 +1,92 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
+import toast from "react-hot-toast";
+import api from "../../../api/axios";
 
 export default function UpdateHeroSlide() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const [formData, setFormData] = useState({
+  const [slide, setSlide] = useState({
     title: "",
     order: "",
     status: "active",
     image: null,
     preview: null,
+    price: 0,
+    link: ""
   });
 
-  useEffect(() => {
-    const fetchedSlide = {
-      title: `Slide ${id}`,
-      order: id,
-      status: id % 2 === 0 ? "inactive" : "active",
-      image:
-        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
+    useEffect(() => {
+    const fetchSlide = async () => {
+      try {
+        console.log(`/slides/${id}`)
+        const res = await api.get(`/slides/${id}`);
+        const s = res.data.slide;
+ 
+        setSlide({
+          title: s.title,
+          order: s.order,
+          status: s.status,
+          image: null,
+          preview: s.images?.[0] || null,
+          price: s.price,
+          link: s.link
+        });
+      } catch (error) {
+        console.log(error)
+        toast.error("Failed to fetch slide");
+      }
     };
 
-    setFormData({
-      title: fetchedSlide.title,
-      order: fetchedSlide.order,
-      status: fetchedSlide.status,
-      image: null,
-      preview: fetchedSlide.image,
-    });
+    fetchSlide();
   }, [id]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setSlide({ ...slide, [name]: value });
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    setFormData({
-      ...formData,
+    setSlide({
+      ...slide,
       image: file,
       preview: URL.createObjectURL(file),
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    console.log("Updated Slide:", { id, ...formData });
-    navigate("/admin/heroslides");
+    try {
+      const formData = new FormData();
+      formData.append("title", slide.title);
+      formData.append("order", slide.order);
+      formData.append("status", slide.status);
+      formData.append("price", slide.price);
+      formData.append("link", slide.link);
+
+      if (slide.image) formData.append("images", slide.image);
+
+      await api.put(`/slides/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      toast.success("Slide updated successfully!");
+      navigate("/admin/heroslides");
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Failed to update slide");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -67,19 +101,40 @@ export default function UpdateHeroSlide() {
             type="text"
             name="title"
             required
-            value={formData.title}
+            value={slide.title}
             onChange={handleChange}
             className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border"
           />
         </div>
-
+        <div>
+          <label className="block text-sm mb-1">Price</label>
+          <input
+            type="text"
+            name="price"
+            required
+            value={slide.price}
+            onChange={handleChange}
+            className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border"
+          />
+        </div>
+        <div>
+          <label className="block text-sm mb-1">Link</label>
+          <input
+            type="text"
+            name="link"
+            required
+            value={slide.link}
+            onChange={handleChange}
+            className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border"
+          />
+        </div>
         <div>
           <label className="block text-sm mb-1">Slide Image</label>
           <input type="file" accept="image/*" onChange={handleImageChange} />
 
-          {formData.preview && (
+          {slide.preview && (
             <img
-              src={formData.preview}
+              src={slide.preview}
               alt="Preview"
               className="mt-3 w-full max-h-60 object-cover rounded-lg"
             />
@@ -92,7 +147,7 @@ export default function UpdateHeroSlide() {
             type="number"
             name="order"
             required
-            value={formData.order}
+            value={slide.order}
             onChange={handleChange}
             className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border"
           />
@@ -107,7 +162,7 @@ export default function UpdateHeroSlide() {
                   type="radio"
                   name="status"
                   value={s}
-                  checked={formData.status === s}
+                  checked={slide.status === s}
                   onChange={handleChange}
                 />
                 {s}
@@ -117,11 +172,20 @@ export default function UpdateHeroSlide() {
         </div>
 
         <div className="flex justify-end gap-4 pt-4">
-          <Button variant="outlined" onClick={() => navigate("/admin/heroslides")}>
+          <Button
+            variant="outlined"
+            onClick={() => navigate("/admin/heroslides")}
+          >
             Cancel
           </Button>
-          <Button type="submit" className="!bg-red-500 !text-white normal-case">
-            Update Slide
+          <Button
+            type="submit"
+            disabled={loading}
+            className={`!text-white ${
+              loading ? "!bg-gray-400" : "!bg-red-500 hover:!bg-red-600"
+            }`}
+          >
+            {loading ? "Updating..." : "Update Slide"}
           </Button>
         </div>
       </form>

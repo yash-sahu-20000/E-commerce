@@ -1,14 +1,33 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import api from "../../../api/axios";
 
 export default function DeleteHomeSlide() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const handleDelete = () => {
-    console.log("Deleted slide:", id);
+  const handleDelete = async () => {
+    
+    setLoading(true);
+    try {
+
+      const res = await api.delete(`/slides/${id}`);
+
+      toast.success("Slide Deleted successfully!");
+      navigate("/admin/homeslides");
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Failed to update slide");
+    } finally {
+      setLoading(false);
+    }    
     navigate("/admin/homeslides");
   };
+
+
 
   return (
     <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 rounded-xl shadow p-6 mt-10">
@@ -23,16 +42,22 @@ export default function DeleteHomeSlide() {
       </p>
 
       <div className="flex justify-end gap-4">
-        <Button variant="outlined" onClick={() => navigate("/admin/home-slides")}>
-          Cancel
-        </Button>
+          <Button
+            variant="outlined"
+            onClick={() => navigate("/admin/homeslides")}
+          >
+            Cancel
+          </Button>
 
-        <Button
-          className="!bg-red-500 !text-white hover:!bg-red-600 normal-case"
-          onClick={handleDelete}
-        >
-          Delete
-        </Button>
+          <Button
+            onClick={handleDelete}
+            disabled={loading}
+            className={`!text-white ${
+              loading ? "!bg-gray-400" : "!bg-red-500 hover:!bg-red-600"
+            }`}
+          >
+            {loading ? "Deleting..." : "Delete Slide"}
+          </Button>
       </div>
     </div>
   );

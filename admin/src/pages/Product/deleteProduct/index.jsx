@@ -1,17 +1,25 @@
 import { useParams, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
+import api from "../../../api/axios";
 
 export default function DeleteProduct() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const handleDelete = () => {
-    console.log("DELETED PRODUCT ID:", id);
+const handleDelete = async () => {
+  try {
+
+    const response = await api.delete(`/products/${id}`);
 
     toast.success("Product deleted successfully");
     navigate("/admin/products");
-  };
+  } catch (error) {
+    console.error("Delete error:", error.response?.data || error.message);
+    toast.error("Failed to delete product");
+  }
+};
+
 
   return (
     <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 rounded-xl shadow p-6 mt-10">
