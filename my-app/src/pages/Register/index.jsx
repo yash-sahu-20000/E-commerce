@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
-import toast from 'react-hot-toast';
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import api from "../../api/axios";
+import { useAuth } from "../../context/AuthContext";
 
 function Register() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -13,7 +18,9 @@ function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!name || !email || !password || !confirmPassword) {
@@ -26,11 +33,32 @@ function Register() {
       return;
     }
 
-    console.log("Register Data:", { name, email, password });
+    try {
+      setLoading(true);
+
+      // POST request to backend
+      const res = await api.post("/auth/register", { name, email, password });
+
+      // Assuming backend returns: { user: {...}, token: "JWT_TOKEN" }
+      const { user, token } = res.data;
+
+      // Save user & token in context
+      login({ ...user, token });
+
+      toast.success("Registration successful!");
+      navigate("/"); // redirect to homepage
+
+    } catch (err) {
+      console.error(err);
+      const message = err.response?.data?.message || "Registration failed";
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="bg-primary dark:bg-gray-900 transition-colors dark:text-white mx-auto  min-h-screen">
+    <div className="bg-primary dark:bg-gray-900 transition-colors dark:text-white mx-auto min-h-screen">
       <div className="flex items-center justify-center p-4">
         <div className="w-full bg-white dark:bg-gray-800 max-w-md rounded-xl shadow-md p-8">
           <h2 className="text-2xl font-bold text-center mb-8">
@@ -44,10 +72,7 @@ function Register() {
                 placeholder="Full Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="
-                  w-full px-4 py-3 border rounded-md bg-transparent
-                  outline-none focus:ring-1 focus:ring-gray-400
-                "
+                className="w-full px-4 py-3 border rounded-md bg-transparent outline-none focus:ring-1 focus:ring-gray-400"
               />
             </div>
 
@@ -57,10 +82,7 @@ function Register() {
                 placeholder="Email Id"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="
-                  w-full px-4 py-3 border rounded-md bg-transparent
-                  outline-none focus:ring-1 focus:ring-gray-400
-                "
+                className="w-full px-4 py-3 border rounded-md bg-transparent outline-none focus:ring-1 focus:ring-gray-400"
               />
             </div>
 
@@ -70,10 +92,7 @@ function Register() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="
-                  w-full px-4 py-3 border rounded-md bg-transparent
-                  outline-none focus:ring-1 focus:ring-gray-400
-                "
+                className="w-full px-4 py-3 border rounded-md bg-transparent outline-none focus:ring-1 focus:ring-gray-400"
               />
               <button
                 type="button"
@@ -90,16 +109,11 @@ function Register() {
                 placeholder="Confirm Password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="
-                  w-full px-4 py-3 border rounded-md bg-transparent
-                  outline-none focus:ring-1 focus:ring-gray-400
-                "
+                className="w-full px-4 py-3 border rounded-md bg-transparent outline-none focus:ring-1 focus:ring-gray-400"
               />
               <button
                 type="button"
-                onClick={() =>
-                  setShowConfirmPassword(!showConfirmPassword)
-                }
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
               >
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
@@ -107,20 +121,19 @@ function Register() {
             </div>
 
             <button
-              className="
-                w-full bg-[#ff5a5a] text-white font-semibold
-                py-3 rounded-md transition
-                hover:bg-[#f31919]
-              "
+              type="submit"
+              disabled={loading}
+              className={`w-full text-white font-semibold py-3 rounded-md transition ${
+                loading ? "bg-gray-400 cursor-not-allowed" : "bg-[#ff5a5a] hover:bg-[#f31919]"
+              }`}
             >
-              REGISTER
+              {loading ? "Registering..." : "REGISTER"}
             </button>
           </form>
 
           <p className="text-center text-sm mt-6">
             Already have an account?{" "}
-            <Link className="text-[#ff5a5a] font-semibold cursor-pointer" to="/login"> 
-
+            <Link className="text-[#ff5a5a] font-semibold cursor-pointer" to="/login">
               Login
             </Link>
           </p>
@@ -129,13 +142,7 @@ function Register() {
             Or continue with social account
           </div>
 
-          <button
-            className="
-              w-full flex items-center justify-center gap-3 bg-transparent
-              py-3 rounded-md font-semibold border
-              transition hover:bg-gray-100 dark:hover:bg-gray-700
-            "
-          >
+          <button className="w-full flex items-center justify-center gap-3 bg-transparent py-3 rounded-md font-semibold border transition hover:bg-gray-100 dark:hover:bg-gray-700">
             <FcGoogle size={22} />
             SIGN UP WITH GOOGLE
           </button>

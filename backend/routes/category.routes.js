@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 router.post('/add', protect, verifyAdmin, multerUpload.array('images', 1), createCategory);
-router.get('/', protect, getCategories);
+router.get('/', getCategories);
 router.delete('/:id', protect, verifyAdmin, deleteCategory);
 
 

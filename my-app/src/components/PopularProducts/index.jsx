@@ -8,7 +8,7 @@ import "swiper/css/navigation";
 import useFetch from "../../hooks/useFetch";
 
 export default function PopularProducts({ title }) {
-  const { data: productData, loading, error } = useFetch("/products?isPopular=true");
+  const { data: productData, loading, error } = useFetch(`/products?${title=='Popular Products'? "isPopular":"isFeatured"}=true`);
   const { data: categoryData } = useFetch("/categories");
 
   const products = productData?.products || [];
