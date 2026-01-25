@@ -21,14 +21,44 @@ export const login = async (req, res) => {
 };
 
 export const register = async (req, res) => {
-  const { name, email, password } = req.body;
-  const hashed = await bcrypt.hash(password, 12);
-  const user = await User.findOne({ email });
-  if (user) return res.status(400).json({ message: 'User exists' });
+  try {
+    const { name, email, password, role } = req.body;
 
-  const newUser = new User({ name, email, password: hashed, role: 'admin' });
-  await newUser.save();
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
 
-  const token = jwt.sign({ id: newUser._id, role: newUser.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
-  res.json({ token, user: { id: newUser._id, name, email, role: newUser.role } });
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    const userRole = role === "admin" ? "admin" : "user";
+
+    const newUser = new User({
+      name,
+      email,
+      password: hashedPassword,
+      role: userRole,
+    });
+
+    await newUser.save();
+
+    const token = jwt.sign(
+      { id: newUser._id, role: newUser.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    res.status(201).json({
+      token,
+      user: {
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
 };

@@ -1,17 +1,25 @@
 import { FaStar, FaShoppingCart } from "react-icons/fa";
 import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductListCard( {product} ) {
   const { id, images, title, rating, price } = product;
 
   const { cart, dispatch } = useCart();
+  const {isAuthenticated} = useAuth();
+  const navigate = useNavigate();
 
   const inCart = cart?.some(item => item.id === id);
 
-  const addToCart = () => {
-    dispatch({ type: "ADD_TO_CART", payload: {id :product.id} });
-  };
+  const handleAddToCart = () => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
 
+    addToCart(product._id, 1);
+  };
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-md transition overflow-hidden">
       <div className="relative">
@@ -48,7 +56,7 @@ export default function ProductListCard( {product} ) {
         </div>
 
         <button
-          onClick={()=>addToCart()}
+          onClick={handleAddToCart}
           disabled={inCart}
           className={`mt-4 w-full border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition rounded-lg py-2 flex items-center justify-center gap-2 ${
             inCart ? "opacity-50 cursor-not-allowed" : ""

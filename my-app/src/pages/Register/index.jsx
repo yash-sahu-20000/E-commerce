@@ -36,17 +36,14 @@ function Register() {
     try {
       setLoading(true);
 
-      // POST request to backend
-      const res = await api.post("/auth/register", { name, email, password });
+      const res = await api.post("/auth/register", { name, email, password, role:'user' });
 
-      // Assuming backend returns: { user: {...}, token: "JWT_TOKEN" }
       const { user, token } = res.data;
 
-      // Save user & token in context
       login({ ...user, token });
 
       toast.success("Registration successful!");
-      navigate("/"); // redirect to homepage
+      navigate("/"); 
 
     } catch (err) {
       console.error(err);

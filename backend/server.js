@@ -10,6 +10,7 @@ import orderRoutes from "./routes/order.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import seedRoutes from "./routes/seed.routes.js"
+import cartRoutes from "./routes/cart.routes.js"
 
 connectDB();
 
@@ -28,6 +29,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/cart", cartRoutes);
 app.use("/api/seed", seedRoutes);
 
 
