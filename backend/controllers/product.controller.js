@@ -1,6 +1,37 @@
 import cloudinary from "../config/cloudinary.js";
 import Product from "../models/Product.js";
 
+export const searchProducts = async (req, res) => {
+  try {
+    const { q } = req.query;
+
+    if (!q || q.trim() === "") {
+      return res.status(200).json({ products: [] });
+    }
+    const products = await Product.find({
+      title: { $regex: q, $options: "i" },
+    })
+      .select("title price images")
+      .limit(10)
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      products: products.map((p) => ({
+        _id: p._id,
+        name: p.title,
+        price: p.price,
+        thumbnail: p.images?.[0] || "",
+      })),
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Search failed",
+    });
+  }
+};
+
+
 export const getProducts = async (req, res) => {
   try {
     const {
@@ -66,7 +97,6 @@ export const getProducts = async (req, res) => {
 };
 
 
-
 export const getProduct = async (req, res) => {
   try {
     const product = await Product.findById({_id: req.params.id})
@@ -84,12 +114,27 @@ export const createProduct = async (req, res) => {
   try {
     const {
       title,
+      brand,
       category,
       price,
+      oldPrice,
+      discount,
       stock,
       status,
       description,
+      sizes,
+      isPopular,
+      isFeatured,
     } = req.body;
+
+    if (!title || !category || !price) {
+      return res.status(400).json({
+        success: false,
+        message: "Title, category and price are required",
+      });
+    }
+
+
 
     let images = [];
 
@@ -99,19 +144,24 @@ export const createProduct = async (req, res) => {
           `data:${file.mimetype};base64,${file.buffer.toString("base64")}`,
           { folder: "products" }
         );
-
         images.push(result.secure_url);
       }
     }
 
     const product = await Product.create({
       title,
-      category, 
+      brand,
+      category,
       price,
+      oldPrice,
+      discount,
       stock,
       status,
       description,
+      sizes,
       images,
+      isPopular: isPopular === "true",
+      isFeatured: isFeatured === "true",
     });
 
     res.status(201).json({
@@ -120,13 +170,14 @@ export const createProduct = async (req, res) => {
       product,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Create product error:", error);
     res.status(500).json({
       success: false,
       message: error.message || "Failed to create product",
     });
   }
 };
+
 
 
 

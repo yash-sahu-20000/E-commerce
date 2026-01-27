@@ -7,21 +7,18 @@ function ProductListing() {
   const [searchParams] = useSearchParams();
   const categoryFromUrl = searchParams.get("category");
 
-  const [filters, setFilters] = useState({
-    categoryid: null,
+  const [filters, setFilters] = useState(() => ({
+    categoryid: categoryFromUrl,
     priceRange: [0, 60000],
     rating: null,
-  });
+  }));
 
   useEffect(() => {
-    if (categoryFromUrl) {
-      setFilters((prev) => ({
-        ...prev,
-        categoryid: categoryFromUrl,
-      }));
-    }
+    setFilters(prev => ({
+      ...prev,
+      categoryid: categoryFromUrl,
+    }));
   }, [categoryFromUrl]);
-
   return (
     <div className="bg-primary dark:bg-gray-900 min-h-screen">
       <div className="flex gap-6 max-w-[95%] mx-auto px-4 py-6">

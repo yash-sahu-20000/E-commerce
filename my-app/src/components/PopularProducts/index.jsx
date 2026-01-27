@@ -85,7 +85,7 @@ export default function PopularProducts({ title }) {
         ))}
       </Swiper>
 
-      {loading && <p className="text-center mt-6">Loading products...</p>}
+      {loading && <p className="text-center mt-6 dark:text-white">Loading products...</p>}
       {error && (
         <p className="text-center mt-6 text-red-500">
           Failed to load products

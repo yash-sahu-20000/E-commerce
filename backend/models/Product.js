@@ -25,6 +25,11 @@ const productSchema = new mongoose.Schema(
       enum: ["active", "inactive"],
       default: "active",
     },
+    sizes: {
+      type: [String],
+      default: [],
+    },
+
     reviewCount: {
       type: Number,
       default: 0,

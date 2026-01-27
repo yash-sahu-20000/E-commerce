@@ -11,7 +11,6 @@ export default function HomeSlider() {
 
   const {data, loading, error} = useFetch(`/slides?type=${SLIDE_TYPE}`);
   const slides = data?.slides || [];
-  console.log(slides)
 
   if (loading)
     return (

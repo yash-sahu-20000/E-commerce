@@ -10,7 +10,7 @@ export default function ProductListCard( {product} ) {
   const {isAuthenticated} = useAuth();
   const navigate = useNavigate();
 
-  const inCart = cart?.some(item => item.id === id);
+  const inCart = cart?.some(item => item.id === _id);
 
   const handleClick = () =>{
     navigate(`/productdescription/${_id}`)

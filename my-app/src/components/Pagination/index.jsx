@@ -6,7 +6,7 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
         Page {currentPage} of {totalPages}
       </p>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 dark:text-white">
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}

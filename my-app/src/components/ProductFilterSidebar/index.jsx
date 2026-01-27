@@ -1,5 +1,5 @@
 import Slider from "@mui/material/Slider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaStar,
   FaChevronUp,
@@ -19,8 +19,6 @@ export default function ProductFilterSidebar({ filters, setFilters }) {
       categoryid: categoryid === id ? null : id,
     });
   };
-
-
 
   return (
     <aside
@@ -103,13 +101,19 @@ export default function ProductFilterSidebar({ filters, setFilters }) {
 function CategoryItem({ category, selectedId, onSelect }) {
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    if (category.children?.some(c => c._id === selectedId)) {
+      setOpen(true);
+    }
+  }, [selectedId]);
+
   return (
     <div className="rounded-lg">
       <div
         className="
           flex items-center justify-between
           px-2 py-2 rounded-lg
-          transition-colors
+          transition-colors dark:text-gray-500
           hover:bg-gray-100 dark:hover:bg-gray-700
         "
       >

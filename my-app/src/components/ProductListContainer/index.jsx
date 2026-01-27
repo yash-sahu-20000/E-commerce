@@ -22,10 +22,6 @@ export default function ProductListContainer({ filters }) {
 
   const { data, loading, error, refetch } = useFetch(`/products?${query}`);
 
-  useEffect(() => {
-    setCurrentPage(1); 
-    refetch();
-  }, [filters]);
 
   const products = data?.products || [];
   const totalPages = data?.totalPages || 1;
@@ -34,7 +30,11 @@ export default function ProductListContainer({ filters }) {
     setView((prev) => (prev === "grid" ? "list" : "grid"));
   };
 
-  if (loading) return <p className="text-center py-10">Loading products...</p>;
+  useEffect(()=>{
+    setCurrentPage(1);
+  },[totalPages])
+
+  if (loading) return <p className="text-center py-10 dark:text-white">Loading products...</p>;
   if (error) return <p className="text-center text-red-500 py-10">Failed to load products</p>;
 
   return (

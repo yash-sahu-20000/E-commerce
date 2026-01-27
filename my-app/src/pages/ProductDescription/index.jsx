@@ -2,25 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../api/axios";
 import { FaStar } from "react-icons/fa";
+import useFetch from "../../hooks/useFetch";
 
 export default function ProductDescription() {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const { data } = await api.get(`/products/${id}`);
-        setProduct(data.product);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProduct();
-  }, [id]);
+  const { data, loading, error} = useFetch(`/products/${id}`);
+  console.log(data)
+  const product = data?.product
 
   if (loading) return <Skeleton />;
   if (!product) return <p className="p-10">Product not found</p>;
@@ -75,18 +64,53 @@ function ProductImages({ images = [] }) {
   );
 }
 
-
 function ProductInfo({ product }) {
   const [size, setSize] = useState(null);
 
+  const handleAddToCart = () => {
+    if (product.sizes?.length > 0 && !size) {
+      toast.error("Please select a size");
+      return;
+    }
+
+    console.log("Add to cart:", {
+      productId: product._id,
+      title: product.title,
+      price: product.price,
+      brand: product.brand,
+      size,
+    });
+
+    toast.success("Added to cart");
+  };
+
   return (
     <div className="flex flex-col gap-5 w-full md:w-1/2">
-      <h1 className="text-3xl font-semibold">{product.title}</h1>
+      <div className="flex items-center justify-between">
+        {product.brand && (
+          <span className="text-sm font-bold text-red-500 uppercase tracking-widest">
+            {product.brand}
+          </span>
+        )}
+        {product.isFeatured && (
+          <span className="bg-blue-100 text-blue-600 text-[10px] px-2 py-1 rounded font-bold uppercase">
+            Featured
+          </span>
+        )}
+      </div>
+
+      <h1 className="text-3xl font-semibold text-gray-900 dark:text-white">
+        {product.title}
+      </h1>
 
       <div className="flex items-center gap-3">
         <div className="flex text-yellow-400">
           {[...Array(5)].map((_, i) => (
-            <FaStar key={i} size={14} />
+            <FaStar 
+              key={i} 
+              size={14} 
+              className={i < (product.rating || 0) ? "fill-current" : "text-gray-300"} 
+            />
           ))}
         </div>
         <span className="text-sm text-gray-400">
@@ -94,46 +118,81 @@ function ProductInfo({ product }) {
         </span>
       </div>
 
-      <div className="flex items-center gap-4 text-2xl font-semibold">
-        {product.originalPrice && (
-          <span className="line-through text-gray-400">
-            ₹{product.originalPrice}
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <span className="text-3xl font-bold text-red-600">₹{product.price}</span>
+          {product.oldPrice && (
+            <span className="line-through text-xl text-gray-400">
+              ₹{product.oldPrice}
+            </span>
+          )}
+        </div>
+        
+        {product.discount > 0 && (
+          <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded">
+            {product.discount}% OFF
           </span>
         )}
-        <span className="text-red-500">₹{product.price}</span>
       </div>
 
-      <p className="text-sm">
-        Stock:{" "}
-        <span className="text-green-600 font-medium">
-          {product.stock} Items
-        </span>
+      <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed line-clamp-3">
+        {product.description}
       </p>
 
+      <div className="flex items-center gap-2 text-sm">
+        <span className="font-medium">Availability:</span>
+        {product.stock > 0 ? (
+          <span className="text-green-600 font-medium">
+            In Stock ({product.stock} items left)
+          </span>
+        ) : (
+          <span className="text-red-500 font-medium">Out of Stock</span>
+        )}
+      </div>
+
+      <hr className="border-gray-200 dark:border-gray-700" />
+
       {product.sizes?.length > 0 && (
-        <div className="flex items-center gap-3">
-          <span className="font-medium">Size:</span>
-          {product.sizes.map((s) => (
-            <button
-              key={s}
-              onClick={() => setSize(s)}
-              className={`px-4 py-1 rounded-md border transition-all duration-300
-                ${
-                  size === s
-                    ? "bg-black text-white scale-105"
-                    : "hover:bg-black hover:text-white"
-                }`}
-            >
-              {s}
+        <div className="flex flex-col gap-3">
+          <div className="flex justify-between items-center">
+            <span className="font-semibold text-sm uppercase">Select Size</span>
+            <button className="text-xs text-gray-500 underline hover:text-red-500 transition">
+              Size Guide
             </button>
-          ))}
+          </div>
+          <div className="flex gap-3 flex-wrap">
+            {product.sizes.map((s) => (
+              <button
+                key={s}
+                onClick={() => setSize(s)}
+                className={`min-w-[45px] h-[40px] px-3 flex items-center justify-center rounded-md border text-sm font-medium transition-all duration-200
+                  ${
+                    size === s
+                      ? "bg-black text-white border-black scale-105 shadow-md"
+                      : "border-gray-300 hover:border-black dark:border-gray-600 dark:text-white"
+                  }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
-      <button className="mt-4 bg-red-500 text-white px-8 py-3 rounded-lg
-        transition-all duration-300 hover:bg-red-600 hover:scale-105">
-        ADD TO CART
-      </button>
+      <div className="flex gap-4 mt-2">
+        <button
+          onClick={handleAddToCart}
+          disabled={product.stock <= 0}
+          className={`flex-1 px-8 py-4 rounded-lg font-bold transition-all duration-300
+            ${
+              product.stock <= 0
+                ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                : "bg-red-500 text-white hover:bg-red-600 active:scale-95 shadow-sm shadow-red-200"
+            }`}
+        >
+          {product.stock <= 0 ? "OUT OF STOCK" : "ADD TO CART"}
+        </button>
+      </div>
     </div>
   );
 }

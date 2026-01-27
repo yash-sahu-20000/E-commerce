@@ -14,8 +14,19 @@ export default function Products() {
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
 
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+      setCurrentPage(1); 
+    }, 500); 
+
+    return () => clearTimeout(handler);
+  }, [search]);
+
   const fetchUrl = `/products?page=${currentPage}&limit=${ITEMS_PER_PAGE}${
-    search ? `&search=${encodeURIComponent(search)}` : ""
+    debouncedSearch ? `&search=${encodeURIComponent(debouncedSearch)}` : ""
   }`;
 
   const { data, loading, error, refetch } = useFetch(fetchUrl);
@@ -23,12 +34,8 @@ export default function Products() {
   const totalPages = data?.totalPages || 1;
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [search]);
-
-  useEffect(() => {
     refetch();
-  }, [currentPage]);
+  }, [currentPage, debouncedSearch]);
 
   if (loading)
     return <p className="text-center py-10 text-gray-400">Loading Products...</p>;
