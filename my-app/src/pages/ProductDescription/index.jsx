@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/axios";
 import { FaStar } from "react-icons/fa";
 import useFetch from "../../hooks/useFetch";
+import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
 
 export default function ProductDescription() {
   const { id } = useParams();
@@ -65,24 +67,35 @@ function ProductImages({ images = [] }) {
 }
 
 function ProductInfo({ product }) {
+  const {stock , _id} = product;
   const [size, setSize] = useState(null);
+  const {addToCart} = useCart();
+  const {isAuthenticated} = useAuth();
+  const navigate = useNavigate();
+  const [isAdding, setIsAdding] = useState(false);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
     if (product.sizes?.length > 0 && !size) {
       toast.error("Please select a size");
       return;
     }
 
-    console.log("Add to cart:", {
-      productId: product._id,
-      title: product.title,
-      price: product.price,
-      brand: product.brand,
-      size,
-    });
+    if (stock === 0 || isAdding) return;
 
-    toast.success("Added to cart");
+    try {
+      setIsAdding(true);
+      await addToCart(_id, 1);
+      toast.success("Added to cart");
+
+    } finally {
+      setIsAdding(false);
+    }
   };
+
 
   return (
     <div className="flex flex-col gap-5 w-full md:w-1/2">
@@ -182,7 +195,7 @@ function ProductInfo({ product }) {
       <div className="flex gap-4 mt-2">
         <button
           onClick={handleAddToCart}
-          disabled={product.stock <= 0}
+          disabled={product.stock <= 0 && isAdding}
           className={`flex-1 px-8 py-4 rounded-lg font-bold transition-all duration-300
             ${
               product.stock <= 0

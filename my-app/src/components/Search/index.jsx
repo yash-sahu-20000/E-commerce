@@ -14,7 +14,7 @@ function Search() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(query);
-    }, 400);
+    }, 500);
 
     return () => clearTimeout(timer);
   }, [query]);

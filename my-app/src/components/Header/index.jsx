@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import Search from "../Search"
-import { FaHeart, FaShoppingCart } from "react-icons/fa"
 import Navigation from "../Navigation"
 import { useAuth } from "../../context/AuthContext"
 
@@ -36,7 +35,7 @@ export default function Header() {
             Super Deal! Free Shipping on Orders Over $50
           </div>
 
-          <div className="flex items-center justify-between md:justify-end gap-4">
+          <div className="flex items-center justify-between md:justify-end gap-4 relative z-50">
             <ul className="flex gap-3">
             {user ? (
                 <>
@@ -67,7 +66,7 @@ export default function Header() {
                             bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-200
                             shadow-lg opacity-0 invisible
                             group-hover:opacity-100 group-hover:visible
-                            transition-all duration-200 z-10"
+                            transition-all duration-200"
                         >
                             <ul className="flex flex-col">
                             <li className="cursor-pointer px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700

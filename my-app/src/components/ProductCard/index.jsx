@@ -28,16 +28,13 @@ export default function ProductCard({ product }) {
     }
   };
 
-  const handleOpen = async () => {
-    navigate(`productdescription/${_id}`);
-  }
 
   return (
     <div
       className="w-[280px] bg-white dark:bg-gray-800 rounded-xl 
                  shadow-md hover:shadow-lg transition 
                  overflow-hidden relative text-gray-900 dark:text-gray-100"
-      onClick={handleOpen}
+      
     >
       <span className="absolute top-3 left-3 bg-red-500 text-white 
                        text-sm font-semibold px-2 py-1 rounded-full z-10">
