@@ -105,7 +105,7 @@ function ProductInfo({ product }) {
 
       <div className="flex items-center gap-3">
         <div className="flex text-yellow-400">
-          {[...Array(5)].map((_, i) => (
+          {[...Array(Math.ceil(product.rating))].map((_, i) => (
             <FaStar 
               key={i} 
               size={14} 
