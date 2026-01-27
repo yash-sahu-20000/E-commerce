@@ -11,6 +11,7 @@ import categoryRoutes from "./routes/category.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import seedRoutes from "./routes/seed.routes.js"
 import cartRoutes from "./routes/cart.routes.js"
+import reviewRoutes from "./routes/review.routes.js"
 
 connectDB();
 
@@ -31,6 +32,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/seed", seedRoutes);
+app.use("/api/reviews", reviewRoutes);
+
 
 
 app.listen(env.port, () =>

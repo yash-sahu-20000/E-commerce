@@ -3,68 +3,55 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { ProductRow } from "../../../components/ProductRow";
 import Pagination from "../../../components/Pagination";
-import useFetch from "../../../hooks/useFetch";
 import { useEffect, useState } from "react";
+import useFetch from "../../../hooks/useFetch";
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 7;
 
 export default function Products() {
   const navigate = useNavigate();
-  const { data, loading, error, refetch } = useFetch("/products");
 
-  const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState("");
 
+  const fetchUrl = `/products?page=${currentPage}&limit=${ITEMS_PER_PAGE}${
+    search ? `&search=${encodeURIComponent(search)}` : ""
+  }`;
+
+  const { data, loading, error, refetch } = useFetch(fetchUrl);
   const products = data?.products || [];
+  const totalPages = data?.totalPages || 1;
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [search, products.length]);
+  }, [search]);
+
+  useEffect(() => {
+    refetch();
+  }, [currentPage]);
 
   if (loading)
-    return (
-      <p className="text-center py-10 text-gray-400">
-        Loading Products...
-      </p>
-    );
+    return <p className="text-center py-10 text-gray-400">Loading Products...</p>;
 
   if (error)
-    return (
-      <p className="text-center py-10 text-red-500">
-        {error}
-      </p>
-    );
-
-  const filteredProducts = products.filter((product) =>
-    product.title.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentProducts = filteredProducts.slice(startIndex, endIndex);
+    return <p className="text-center py-10 text-red-500">{error}</p>;
 
   return (
     <div className="bg-white dark:text-white dark:bg-gray-900 rounded-xl shadow p-6">
-      
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-6">
           <h1 className="text-xl font-semibold">Products</h1>
-
           <div className="relative">
-            <FaSearch
-              className="absolute top-2.5 left-3 text-gray-400"
-              size={16}
-            />
+            <FaSearch className="absolute top-2.5 left-3 text-gray-400" size={16} />
             <input
               type="text"
               placeholder="Search product..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-10 pr-4 py-2 text-sm rounded-lg
-              bg-gray-50 dark:bg-gray-800
-              border border-gray-300 dark:border-gray-700
-              focus:outline-none focus:ring-2 focus:ring-red-500"
+                bg-gray-50 dark:bg-gray-800
+                border border-gray-300 dark:border-gray-700
+                focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
         </div>
@@ -87,18 +74,12 @@ export default function Products() {
       </div>
 
       <div className="space-y-3 mt-3">
-        {currentProducts.length > 0 ? (
-          currentProducts.map((product) => (
-            <ProductRow
-              key={product._id}
-              product={product}
-              refetch={refetch}
-            />
+        {products.length > 0 ? (
+          products.map((product) => (
+            <ProductRow key={product._id} product={product} refetch={refetch} />
           ))
         ) : (
-          <p className="text-center text-gray-400 py-6">
-            No products found
-          </p>
+          <p className="text-center text-gray-400 py-6">No products found</p>
         )}
       </div>
 

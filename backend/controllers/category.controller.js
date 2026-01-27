@@ -1,14 +1,30 @@
 import Category from '../models/Category.js';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import cloudinary from '../config/cloudinary.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+
 
 export const createCategory = async (req, res) => {
   try {
-    const { name, description } = req.body;
+    const { name, description, parent } = req.body;
+
+    if (!name) {
+      return res.status(400).json({
+        success: false,
+        message: "Category name is required",
+      });
+    }
+
+    let parentCategory = null;
+    if (parent) {
+      parentCategory = await Category.findById(parent);
+      if (!parentCategory) {
+        return res.status(400).json({
+          success: false,
+          message: "Parent category not found",
+        });
+      }
+    }
+
     let images = [];
     if (req.files && req.files.length > 0) {
       for (const file of req.files) {
@@ -19,16 +35,26 @@ export const createCategory = async (req, res) => {
         images.push(result.secure_url);
       }
     }
+
     const category = await Category.create({
       name,
       description,
       images,
+      parent: parent || null, 
       isActive: true,
     });
 
-    res.json({ success: true, category });
+    res.status(201).json({
+      success: true,
+      message: "Category created successfully",
+      category,
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
@@ -47,5 +73,48 @@ export const deleteCategory = async (req, res) => {
     res.json({ success: true, message: 'Category deleted' });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
+  }
+}
+
+export const getRootCategories = async (req, res) => {
+  try {
+    const categories = await Category.find({
+      parent: null,
+      isActive: true,
+    })
+      .sort({ name: 1 });
+
+    res.json({ success: true, categories });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+export const getCategoriesWithChildren = async (req, res) => {
+  try {
+    const rootCategories = await Category.find({ parent: null, isActive: true })
+      .select("_id name")
+      .sort({ name: 1 });
+
+    const rootIds = rootCategories.map((cat) => cat._id);
+
+    const children = await Category.find({ parent: { $in: rootIds }, isActive: true })
+      .select("_id name parent")
+      .sort({ name: 1 });
+
+    const categoriesWithChildren = rootCategories.map((root) => ({
+      _id: root._id,
+      name: root.name,
+      children: children
+        .filter((child) => child.parent.toString() === root._id.toString())
+        .map((child) => ({
+          _id: child._id,
+          name: child.name,
+        })),
+    }));
+
+    res.json({ success: true, categories: categoriesWithChildren });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: err.message });
   }
 };

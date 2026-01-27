@@ -28,11 +28,16 @@ export default function ProductCard({ product }) {
     }
   };
 
+  const handleOpen = async () => {
+    navigate(`productdescription/${_id}`);
+  }
+
   return (
     <div
       className="w-[280px] bg-white dark:bg-gray-800 rounded-xl 
                  shadow-md hover:shadow-lg transition 
                  overflow-hidden relative text-gray-900 dark:text-gray-100"
+      onClick={handleOpen}
     >
       <span className="absolute top-3 left-3 bg-red-500 text-white 
                        text-sm font-semibold px-2 py-1 rounded-full z-10">
@@ -67,8 +72,15 @@ export default function ProductCard({ product }) {
         </h3>
 
         <div className="flex items-center gap-1 my-2">
-          {[...Array(rating)].map((_, i) => (
-            <FaStar key={i} className="text-yellow-400 text-sm" />
+          {[1, 2, 3, 4, 5].map((s) => (
+            <FaStar
+              key={s}
+              size={14}
+              className={`
+                transition-colors
+                ${rating >= s ? "text-yellow-400" : "text-gray-300"}
+              `}
+            />
           ))}
         </div>
 

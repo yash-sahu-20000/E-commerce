@@ -14,7 +14,7 @@ export const getProducts = async (req, res) => {
       page = 1,
       limit = 8
     } = req.query;
-
+    console.log(req.query)
     const filter = {};
 
     if (category) {

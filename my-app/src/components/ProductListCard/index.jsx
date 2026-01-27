@@ -4,7 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function ProductListCard( {product} ) {
-  const { id, images, title, rating, price } = product;
+  const { _id, images, title, rating, price } = product;
 
   const { cart, dispatch } = useCart();
   const {isAuthenticated} = useAuth();
@@ -12,16 +12,19 @@ export default function ProductListCard( {product} ) {
 
   const inCart = cart?.some(item => item.id === id);
 
+  const handleClick = () =>{
+    navigate(`/productdescription/${_id}`)
+  }
+
   const handleAddToCart = () => {
     if (!isAuthenticated) {
       navigate("/login");
       return;
     }
-
     addToCart(product._id, 1);
   };
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-md transition overflow-hidden">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-md transition overflow-hidden hover:cursor-pointer" onClick={handleClick}>
       <div className="relative">
         <img
           src={images?.[0] || './placeholder.png'}
@@ -42,10 +45,14 @@ export default function ProductListCard( {product} ) {
         </h3>
 
         <div className="flex items-center gap-1 my-2">
-          {[...Array(rating)].map((_, i) => (
+          {[1, 2, 3, 4, 5].map((s) => (
             <FaStar
-              key={i}
-              className={i < rating ? "text-yellow-400" : "text-gray-300"}
+              key={s}
+              size={14}
+              className={`
+                transition-colors
+                ${rating >= s ? "text-yellow-400" : "text-gray-300"}
+              `}
             />
           ))}
         </div>

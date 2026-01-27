@@ -23,7 +23,7 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
         <div>
             <button
               disabled={true}
-              className={"px-3 py-1.5 rounded-lg text-sm border hover:bg-gray-100 dark:hover:bg-gray-800 border-gray-300 dark:border-gray-700"}
+              className={"px-3 py-1.5 rounded-lg text-sm border hover:bg-gray-100 dark:hover:bg-gray-800 border-gray-300 dark:text-white dark:border-gray-700"}
             >
               {currentPage}
             </button>

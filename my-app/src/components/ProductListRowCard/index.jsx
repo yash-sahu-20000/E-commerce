@@ -1,11 +1,19 @@
 import { FaStar, FaShoppingCart } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductListRowCard({ product }) {
+
+  const navigate = useNavigate();
+
   const imageUrl =
     product.images?.[0] || "https://via.placeholder.com/150";
 
+  const handleClick = () =>{
+    navigate(`/productdescription/${product._id}`)
+  }
+
   return (
-    <div className="flex gap-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-5">
+    <div className="flex gap-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-5 hover:cursor-pointer" onClick={handleClick}> 
       <div className="relative w-64 flex-shrink-0">
         <img
           src={imageUrl}

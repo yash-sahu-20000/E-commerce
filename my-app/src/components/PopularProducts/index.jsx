@@ -9,7 +9,7 @@ import useFetch from "../../hooks/useFetch";
 
 export default function PopularProducts({ title }) {
   const { data: productData, loading, error } = useFetch(`/products?${title=='Popular Products'? "isPopular":"isFeatured"}=true`);
-  const { data: categoryData } = useFetch("/categories");
+  const { data: categoryData } = useFetch("/categories/root");
 
   const products = productData?.products || [];
   const categories = categoryData?.categories || [];
