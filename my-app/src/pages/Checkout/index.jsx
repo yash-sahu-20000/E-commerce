@@ -47,13 +47,14 @@ function Checkout() {
 
     try {
       if (formData.payment === "cod") {
+        
         const response = await api.post("/orders/create-order", {
           ...formData,
           items: cart,  
           total: totalAmount,
           userid: savedUser._id
         });
-        
+        console.log(response);
         if (response.data.success) {
           clearCart();
           toast.success("Order placed successfully! 🎉");
