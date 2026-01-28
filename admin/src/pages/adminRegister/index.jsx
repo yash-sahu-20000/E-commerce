@@ -14,6 +14,7 @@ export default function AdminRegister() {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "admin"
   });
 
   const handleChange = (e) => {
