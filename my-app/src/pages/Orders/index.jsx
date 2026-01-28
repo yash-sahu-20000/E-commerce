@@ -49,7 +49,7 @@ export default function Orders() {
   if (error) return <div className="p-10 text-center text-red-500 font-bold font-mono">Error: {error.message}</div>;
 
   return (
-    <div className="bg-primary dark:bg-gray-900 transition-colors dark:text-white mx-auto min-h-screen">
+    <div className="bg-black dark:bg-gray-900 transition-colors dark:text-white mx-auto min-h-screen">
       <div className="max-w-[95%] mx-auto px-4 py-10">
         <div className="flex items-center gap-4 mb-8">
           <h1 className="text-3xl font-bold">My Orders</h1>
