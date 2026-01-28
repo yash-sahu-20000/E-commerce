@@ -98,16 +98,7 @@ export default function Header() {
 
                               Cart
                             </Link>  
-                            </li>                            <li className="cursor-pointer px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700
-                                        hover:text-gray-900 dark:hover:text-white transition-colors">
-                          <Link
-                              to="/wishlist"
-                              className="px-4 py-1.5 text-sm font-medium group
-                                        transition-all duration-300 hover:scale-105  border-gray-400 dark:border-gray-600">
-
-                              Wishlist
-                            </Link>  
-                            </li>
+                            </li>                            
                             </ul>
                         </div>  
                         </Link>             
@@ -137,13 +128,9 @@ export default function Header() {
               <li className="hidden md:block">
                 <Link className="px-4 py-1.5 rounded-full text-sm font-medium
                               hover:shadow-md dark:hover:shadow-white dark:hover:shadow-sm
-                              transition-all duration-300 hover:scale-105 border-r-2 border-gray-400 dark:border-gray-600" to="/help">Help</Link>
+                              transition-all duration-300 hover:scale-105 border-r-2 border-gray-400 dark:border-gray-600" to="/help-contact">Help or Contact</Link>
               </li>
-              <li className="hidden md:block">
-                <Link className="px-4 py-1.5 rounded-full text-sm font-medium
-                              hover:shadow-md dark:hover:shadow-white dark:hover:shadow-sm
-                              transition-all duration-300 hover:scale-105 border-r-2 border-gray-400 dark:border-gray-600" to="/contact">Contact</Link>
-              </li>
+
             </ul>
 
             <button

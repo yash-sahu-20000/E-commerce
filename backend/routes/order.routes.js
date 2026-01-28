@@ -19,6 +19,6 @@ router.get("/user/:userId", protect, getUserOrders);
 
 router.get("/:id", protect, getOrderById);
 
-router.put("/:id/status", protect, verifyAdmin, updateOrderStatus);
+router.put("/:id/status", protect, updateOrderStatus);
 
 export default router;

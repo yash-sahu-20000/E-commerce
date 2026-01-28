@@ -4,7 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function ProductListCard( {product} ) {
-  const { _id, images, title, rating, price } = product;
+  const { _id, images, title, rating, price, discount, oldPrice } = product;
 
   const { cart, dispatch } = useCart();
   const {isAuthenticated} = useAuth();
@@ -31,9 +31,9 @@ export default function ProductListCard( {product} ) {
           alt={title}
           className="w-full h-72 object-cover hover:scale-105 transition-transform duration-300"
         />
-        {true && (
+        {{discount} && (
           <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
-            5%
+            {discount}%
           </span>
         )}
       </div>
@@ -58,7 +58,7 @@ export default function ProductListCard( {product} ) {
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-gray-400 line-through">₹{price}</span>
+          <span className="text-gray-400 line-through">₹{oldPrice}</span>
           <span className="text-red-500 font-semibold text-lg">₹{price}</span>
         </div>
 
