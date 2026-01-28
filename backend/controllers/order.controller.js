@@ -1,14 +1,43 @@
 import Order from "../models/Order.js";
 
+
 export const getOrders = async (req, res) => {
-  const orders = await Order.find().sort({ createdAt: -1 });
-  res.json(orders);
+  try {
+    const orders = await Order.find()
+      .populate("user", "name email") 
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      response: orders,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
+export const getOrderById = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id)
+      .populate("user", "name email")
+      .populate("items.product");
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: "Order not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      response: order, 
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 export const getUserOrders = async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user._id })
+    const orders = await Order.find({ user: req.params.userId })
       .populate("items.product") 
       .sort({ createdAt: -1 });
 
@@ -28,7 +57,7 @@ export const getUserOrders = async (req, res) => {
 
 export const createOrder = async (req, res) => {
   try {
-    const { items, total, payment, name, phone, address, city, state, zip } = req.body;
+    const { items, total, payment, name, phone, address, city, state, zip, userid } = req.body;
 
     if (!items || items.length === 0) {
       return res.status(400).json({ success: false, message: "No items in order" });
@@ -44,7 +73,7 @@ export const createOrder = async (req, res) => {
     }));
 
     const newOrder = new Order({
-      user: req.user._id,
+      user: userid,
       items: orderItems,
       totalAmount: total,
       paymentMethod: payment,

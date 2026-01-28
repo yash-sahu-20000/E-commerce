@@ -70,6 +70,21 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const clearCart = async () => {
+    try {
+      const res = await api.put(`/cart/clearCart`);
+
+      dispatch({ type: "CLEAR_CART", payload: res.data.cart });
+
+    } catch (error) {
+      console.error("CART CLEAR ERROR:", error);
+      toast.error(
+        error.response?.data?.message || "Failed to remove item"
+      );
+    }
+  };
+
+
   useEffect(() => {
     if (isAuthenticated) {
       fetchCart();
@@ -84,6 +99,7 @@ export const CartProvider = ({ children }) => {
         cart: state.cart,
         fetchCart,
         addToCart,
+        clearCart,
         updateCartItem,
         removeFromCart,
       }}

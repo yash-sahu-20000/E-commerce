@@ -1,6 +1,7 @@
 import express from "express";
 import {
   createOrder,
+  getOrderById,
   getOrders,
   getUserOrders,
   updateOrderStatus,
@@ -11,8 +12,13 @@ import { protect, verifyAdmin } from "../middleware/auth.middleware.js";
 const router = express.Router();
 
 router.get("/", protect, verifyAdmin, getOrders);
+
 router.post("/create-order", protect, createOrder);
-router.post("/:id", protect, getUserOrders);
+
+router.get("/user/:userId", protect, getUserOrders);
+
+router.get("/:id", protect, getOrderById);
+
 router.put("/:id/status", protect, verifyAdmin, updateOrderStatus);
 
 export default router;

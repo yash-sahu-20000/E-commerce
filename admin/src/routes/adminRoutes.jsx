@@ -20,6 +20,7 @@ import AddHeroSlides from "../pages/HeroSlide/addHeroSlide";
 import UpdateHeroSlides from "../pages/HeroSlide/updateHeroSlide";
 import DeleteHeroSlides from "../pages/HeroSlide/deleteHeroSlide";
 import ViewUser from "../pages/Users/viewUser";
+import OrderDetails from "../pages/Order/viewOrder";
 
 
 
@@ -50,7 +51,8 @@ export const adminRoutes = {
     { path: "categories", element: <Categories /> },
     { path: "categories/add", element: <AddCategories /> },
     { path: "categories/delete/:id", element: <DeleteCategory /> },
-    { path: "orders", element : <Orders />}
+    { path: "orders", element : <Orders />},
+    { path: "orders/:id", element : <OrderDetails />}
 
   ],
 };

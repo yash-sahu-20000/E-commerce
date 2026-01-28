@@ -50,7 +50,8 @@ function Checkout() {
         const response = await api.post("/orders/create-order", {
           ...formData,
           items: cart,  
-          total: totalAmount
+          total: totalAmount,
+          userid: savedUser._id
         });
         
         if (response.data.success) {
