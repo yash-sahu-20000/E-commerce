@@ -54,7 +54,6 @@ function Checkout() {
           total: totalAmount,
           userid: savedUser._id
         });
-        console.log(response);
         if (response.data.success) {
           clearCart();
           toast.success("Order placed successfully! 🎉");

@@ -1,4 +1,6 @@
 import User from "../models/User.js";
+import bcrypt from "bcryptjs";
+
 
 export const getUsers = async (req, res) => {
   try {
@@ -70,7 +72,7 @@ export const getUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
-    const { name, email, phone, password } = req.body;
+    const { name, email, phone } = req.body;
 
     const user = await User.findById(req.params.id);
 
@@ -85,10 +87,6 @@ export const updateUser = async (req, res) => {
     user.email = email || user.email;
     user.phone = phone || user.phone;
 
-    if (password && password.trim() !== "") {
-      const hashedPassword = await bcrypt.hash(password, 12);
-      user.password = hashedPassword;
-    }
 
     const updatedUser = await user.save();
 
@@ -111,3 +109,50 @@ export const updateUser = async (req, res) => {
   }
 };
 
+
+export const updatePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.params.id; 
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide both current and new passwords",
+      });
+    }
+
+    const user = await User.findById(userId).select("+password");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Current password is incorrect",
+      });
+    }
+
+    const salt = await bcrypt.genSalt(12);
+    user.password = await bcrypt.hash(newPassword, salt);
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password updated successfully",
+    });
+
+  } catch (error) {
+    console.error("Update Password Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};

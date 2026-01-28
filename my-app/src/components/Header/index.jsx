@@ -6,8 +6,8 @@ import { useAuth } from "../../context/AuthContext"
 
 export default function Header() {
   const [darkMode, setDarkMode] = useState(false)
-  const { user, isAuthenticated, logout } = useAuth();
-
+  const {  isAuthenticated, logout } = useAuth();
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme")
