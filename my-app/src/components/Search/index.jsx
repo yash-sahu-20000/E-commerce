@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
+import Loader from "../Loading";
 
 function Search() {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ function Search() {
           <div className="absolute left-0 right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto">
             {loading ? (
               <p className="px-4 py-3 text-sm text-gray-500">
-                Searching...
+                <Loader/>
               </p>
             ) : products.length === 0 ? (
               <p className="px-4 py-3 text-sm text-gray-500">

@@ -9,6 +9,7 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
+import Loader from '../Loading';
 
 export default function CategoryPanel({ open, onClose }) {
   const { data, loading } = useFetch("/categories/root");
@@ -46,7 +47,7 @@ export default function CategoryPanel({ open, onClose }) {
         <List>
           {loading ? (
             <ListItem sx={{ px: 3, py: 2 }}>
-              <Typography variant="body2" color="text.secondary">Loading...</Typography>
+              <Typography variant="body2" color="text.secondary"><Loader/></Typography>
             </ListItem>
           ) : categories.length > 0 ? (
             categories.map((category) => (

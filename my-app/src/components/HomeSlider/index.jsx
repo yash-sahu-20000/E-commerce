@@ -4,6 +4,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import useFetch from '../../hooks/useFetch'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import Loader from '../Loading';
 
 const SLIDE_TYPE = 'home';
 
@@ -15,7 +16,7 @@ export default function HomeSlider() {
   if (loading)
     return (
       <p className="text-center py-10 text-gray-400">
-        Loading slides...
+         <Loader/>
       </p>
     );
   if (error)

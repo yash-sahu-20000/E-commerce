@@ -5,6 +5,7 @@ import Pagination from "../../components/Pagination";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios"; // Ensure you import your axios instance
 import toast from "react-hot-toast";
+import Loader from "../../components/Loading";
 
 export default function Orders() {
   const ITEMS_PER_PAGE = 5; 
@@ -45,7 +46,7 @@ export default function Orders() {
   };
 
   if(!isAuthenticated) navigate('/login');
-  if (loading) return <div className="p-10 text-center dark:text-white font-bold">Loading orders...</div>;
+  if (loading) return <div className="p-10 text-center dark:text-white font-bold"><Loader/></div>;
   if (error) return <div className="p-10 text-center text-red-500 font-bold font-mono">Error: {error.message}</div>;
 
   return (

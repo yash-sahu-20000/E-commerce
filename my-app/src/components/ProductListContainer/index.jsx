@@ -3,6 +3,7 @@ import ProductListRowCard from "../ProductListRowCard";
 import { useState, useEffect } from "react";
 import useFetch from "../../hooks/useFetch";
 import Pagination from "../Pagination";
+import Loader from "../Loading";
 
 export default function ProductListContainer({ filters }) {
   const [view, setView] = useState("grid");
@@ -34,7 +35,7 @@ export default function ProductListContainer({ filters }) {
     setCurrentPage(1);
   },[totalPages])
 
-  if (loading) return <p className="text-center py-10 dark:text-white">Loading products...</p>;
+  if (loading) return <p className="text-center py-10 dark:text-white"><Loader/></p>;
   if (error) return <p className="text-center text-red-500 py-10">Failed to load products</p>;
 
   return (

@@ -6,6 +6,7 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import useFetch from "../../hooks/useFetch";
+import Loader from "../Loading";
 
 export default function PopularProducts({ title }) {
   const { data: productData, loading, error } = useFetch(`/products?${title=='Popular Products'? "isPopular":"isFeatured"}=true`);
@@ -85,7 +86,7 @@ export default function PopularProducts({ title }) {
         ))}
       </Swiper>
 
-      {loading && <p className="text-center mt-6 dark:text-white">Loading products...</p>}
+      {loading && <p className="text-center mt-6 dark:text-white"><Loader/></p>}
       {error && (
         <p className="text-center mt-6 text-red-500">
           Failed to load products

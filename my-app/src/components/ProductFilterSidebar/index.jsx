@@ -6,6 +6,7 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 import useFetch from "../../hooks/useFetch";
+import Loader from "../Loading";
 
 export default function ProductFilterSidebar({ filters, setFilters }) {
   const { categoryid, priceRange, rating } = filters;
@@ -33,7 +34,7 @@ export default function ProductFilterSidebar({ filters, setFilters }) {
       <Section title="Shop by Category">
         {loading && (
           <p className="text-sm text-gray-400 animate-pulse">
-            Loading categories…
+            <Loader/>
           </p>
         )}
 

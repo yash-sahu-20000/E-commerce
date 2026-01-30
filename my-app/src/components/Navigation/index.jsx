@@ -6,6 +6,7 @@ import { GiClothes, GiRunningShoe } from "react-icons/gi";
 import Button from "@mui/material/Button";
 import useFetch from "../../hooks/useFetch";
 import { useNavigate } from "react-router-dom";
+import Loader from "../Loading";
 
 function Navigation() {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ function Navigation() {
   }, [navCategories]);
 
   if (loading)
-    return <p className="text-center py-4  text-gray-400">Loading categories...</p>;
+    return <p className="text-center py-4  text-gray-400"><Loader/></p>;
   if (error)
     return (
       <p className="text-center py-4 text-red-500">
