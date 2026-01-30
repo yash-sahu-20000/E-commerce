@@ -13,7 +13,7 @@ function CategorySlider() {
 
   return (
     <div className="flex gap-4 flex-wrap">
-      {loading ? (<div className="text-center text-gray-400 py-10">Loading categoies..</div> ) : categories.length > 0 ? (
+      {loading ? (<p className="text-center w-full text-gray-400 py-10">Loading categories..</p> ) : categories.length > 0 ? (
         <div className="flex gap-6">
           {categories.map((category) => (
             <div
@@ -43,7 +43,7 @@ function CategorySlider() {
           ))}
         </div>
       ) : (
-        <p className="text-center text-gray-400 py-10">
+        <p className="text-center w-full text-red-500  py-10">
           No category found
         </p>
       )}
