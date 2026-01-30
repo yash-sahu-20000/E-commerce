@@ -41,7 +41,7 @@ function Navigation() {
   }, [navCategories]);
 
   if (loading)
-    return <p className="text-center py-4">Loading categories...</p>;
+    return <p className="text-center py-4  text-gray-400">Loading categories...</p>;
   if (error)
     return (
       <p className="text-center py-4 text-red-500">

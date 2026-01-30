@@ -81,7 +81,7 @@ export default function CategoryPanel({ open, onClose }) {
             ))
           ) : (
             <ListItem sx={{ px: 3, py: 2 }}>
-              <Typography variant="body2" color="text.secondary">No categories found</Typography>
+              <Typography variant="body2" color="text.secondary">Loading...</Typography>
             </ListItem>
           )}
         </List>
